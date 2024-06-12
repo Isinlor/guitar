@@ -1,9 +1,12 @@
 <script setup lang="ts">
 
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { NoteEventWithFingeringAndAlternatives, TrackFingeringWithAlternatives } from '../model/types';
+import { useWindowSize } from '@vueuse/core'
 
-const conversion = computed(() => 30 / music.value.reduce((acc, tab) => Math.min(acc, tab.durationMs), Infinity));
+const windowSize = useWindowSize();
+
+const conversion = computed(() => 25 / music.value.reduce((acc, tab) => Math.min(acc, tab.durationMs), Infinity));
 
 const offset = 200;
 
@@ -31,22 +34,61 @@ const maxTimeMs = computed(() => {
   }, 0);
 });
 
+const tabs = ref<HTMLElement>();
+
+let playbackRateValue = 1;
+const playbackRate = computed({
+  get: () => playbackRateValue,
+  set: (value) => {
+    playbackRateValue = value;
+    if(animation.value) animation.value.playbackRate = value;
+  }
+});
+const playState = ref('idle');
+
+let animation = ref<Animation>();
+watch([music, maxTimeMs, conversion], () => {
+  if(animation.value) animation.value?.cancel();
+  animation.value = tabs.value?.animate(
+    { transform: `translate(${-maxTimeMs.value * conversion.value}px)` },
+    { duration: maxTimeMs.value, playbackRate: playbackRate.value }
+  );
+  pause();
+  if(!animation.value) return;
+  animation.value.onfinish = () => {
+    playState.value = 'finished';
+  };
+  animation.value.oncancel = () => {
+    playState.value = 'idle';
+  };
+}, { immediate: true });
+
+function play() {
+  animation.value?.play();
+  playState.value = 'running';
+}
+
+function pause() {
+  animation.value?.pause();
+  playState.value = 'paused';
+}
+
 </script>
 <template>
-  
+
   <div class="track">
     <div class="indicator" :style="{ left: `${offset}px` }"></div>
     <div class="scroll-container">
-      <div class="tab-container">
+      <div class="tab-container" ref="tabs">
         <div class="tab-row" v-for="string in instrument.strings" :key="string">
           <div 
             class="string" :class="{ [`string-${string}`]: true }"
-            :style="{ width: `${Math.ceil(offset + maxTimeMs * conversion)}px` }"
+            :style="{ width: `${Math.ceil(offset + maxTimeMs * conversion + windowSize.width.value)}px` }"
           ></div>
           <div 
             v-for="tab in tabsGroupedByStrings[string]"
             class="note" :class="{ [`finger-${tab.fingering.finger}`]: true }"
-            :style="{ 
+            :style="{
               left: `${Math.floor(offset + tab.startTimeMs * conversion)}px`,
               width: `${Math.floor(tab.durationMs * conversion)}px`
             }"
@@ -58,8 +100,10 @@ const maxTimeMs = computed(() => {
     </div>
   </div>
 
-  <button style="margin: 1rem;">Start playing</button>
-  <div class="time"></div>
+  <button style="margin: 1rem;" @click="play()" v-if="playState !== 'running'">Start playing</button>
+  <button style="margin: 1rem;" @click="pause()" v-else>Pause playing</button>
+  <input type="range" v-model="playbackRate" min="0.1" max="2" step="0.1" style="margin: 1rem;">
+
   <div style="margin: 1rem;">
     <span class="tag finger-0">Open note</span>
     <span class="tag finger-1">Finger 1</span>
