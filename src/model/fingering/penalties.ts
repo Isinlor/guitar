@@ -1,4 +1,3 @@
-import { c } from "vite/dist/node/types.d-aGj9QkWt";
 import { MidiNote, TrackFingering } from "../types";
 import { fingeringToString, fretFingerToString } from "./fingering";
 
@@ -135,6 +134,7 @@ export function fingerStringJumpingPenalty(trackFingering: TrackFingering) {
 
 export function handMovementPenalty(trackFingering: TrackFingering) {
   let penalty = 0;
+  let movement = 0;
   for (let i = 0; i < trackFingering.length - 1; i++) {
     let currentFingering = trackFingering[i].fingering;
     let nextFingering = trackFingering[i + 1].fingering;
@@ -167,8 +167,9 @@ export function handMovementPenalty(trackFingering: TrackFingering) {
     // fret 1 finger 1 -> fret 9 (+8) finger 1 = fret 9 finger 1 -> fret 1 finger 1 = 7
     // fret 8 finger 1 -> fret 1 (-7) finger 1 (0) = // -8 - 0 + 8 = 1
     penalty += 5 + Math.abs(fretChange - fingerChange) ** 2;
+    movement += 1;
   }
-  return penalty;
+  return penalty + movement ** 4;
 }
 
 // console.log(

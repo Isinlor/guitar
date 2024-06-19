@@ -1,6 +1,6 @@
 import { Midi, Track } from "@tonejs/midi";
 import fs from 'fs';
-import { MidiNote, NoteEvent, MidiNoteToFingeringAlternatives, NoteEventWithFingeringAlternatives } from "./types";
+import { MidiNote, NoteEvent } from "./types";
 
 export function readMidiFile(filename: string) {
   return new Midi(fs.readFileSync(filename));
@@ -11,19 +11,12 @@ export function writeMidiFile(midi: Midi, filename: string) {
 }
 
 export function transpose(track: Track, transposition: number) {
-  track.notes.forEach(note => {
-    note.midi += transposition;
+  return track.notes.map(note => {
+    return {
+      ...note,
+      midi: note.midi + transposition
+    }
   });
-}
-
-export function getUniqueNotes(track: Track): MidiNote[] {
-  return [...new Set(track.notes.map(note => note.midi))].sort((a, b) => a - b);
-}
-
-export function getRange(notes: MidiNote[]): { min: MidiNote, max: MidiNote, range: number } {
-  const min = Math.min(...notes);
-  const max = Math.max(...notes);
-  return { min, max, range: max - min + 1 };
 }
 
 export function getNoteEvents(track: Track): NoteEvent[] {
@@ -32,18 +25,6 @@ export function getNoteEvents(track: Track): NoteEvent[] {
     startTimeMs: Math.round(note.time * 1000),
     durationMs: Math.round(note.duration * 1000)
   }));
-}
-
-export function getNoteEventsWithFingeringAlternatives(
-  track: Track, midiNoteToFingeringAlternatives: MidiNoteToFingeringAlternatives
-): NoteEventWithFingeringAlternatives[] {
-  return getNoteEvents(track).map(noteEvent => {
-    const fingeringAlternatives = midiNoteToFingeringAlternatives.get(noteEvent.note);
-    if (!fingeringAlternatives) throw new Error(
-      `No string fret alternatives available for note ${noteEvent.note}!`
-    );
-    return { ...noteEvent, fingeringAlternatives };
-  });
 }
 
 /**

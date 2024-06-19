@@ -1,6 +1,6 @@
-import { s } from "vite/dist/node/types.d-aGj9QkWt";
-import { getRange, noteNumberFromFrequency } from "./midi";
-import { MidiNote, StringFretAlternatives, NumberRange, MidiNoteToStringFretAlternatives, MidiNoteToFingeringAlternatives, StringFret } from "./types";
+import { getRange } from "@/model/fingering/fingering";
+import { noteNumberFromFrequency } from "./midi";
+import { MidiNote, MidiNoteToFingeringAlternatives, MidiNoteToStringFretAlternatives, NumberRange, StringFret, StringFretAlternatives } from "./types";
 
 export class Instrument {
 
@@ -9,6 +9,14 @@ export class Instrument {
     public readonly fretsAmount: number,
     public readonly baseFrequencies: Record<number, number>,
   ) {
+  }
+
+  public static get(name: string): Instrument {
+    switch (name) {
+      case "ukulele": return Instrument.ukulele();
+      case "guitar": return Instrument.guitar();
+      default: throw new Error(`No instrument found with name ${name}!`);
+    }
   }
 
   public static ukulele(): Instrument {
@@ -225,6 +233,14 @@ export class Instrument {
 
   public findLowestTranspositionWithSmallestFretRange(notes: MidiNote[]) {
     return Math.min(...this.findTranspositionsWithSmallestFretRange(notes));
+  }
+
+  public findMostAccurateTranspositionWithSmallestFretRange(notes: MidiNote[]) {
+    const transpositionsWithSmallestFretRange = this.findTranspositionsWithSmallestFretRange(notes);
+    const mostAccurateTransposition = transpositionsWithSmallestFretRange.reduce((acc, transposition) => {
+      return Math.abs(transposition) < Math.abs(acc) ? transposition : acc;
+    }, transpositionsWithSmallestFretRange[0]);
+    return mostAccurateTransposition;
   }
 
   public findLowestTransposition(notes: MidiNote[]) {

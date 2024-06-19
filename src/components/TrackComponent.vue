@@ -1,12 +1,14 @@
 <script setup lang="ts">
 
-import { computed, ref, watch } from 'vue';
-import { NoteEventWithFingeringAndAlternatives, TrackFingeringWithAlternatives } from '../model/types';
-import { useWindowSize } from '@vueuse/core'
+import { frequencyFromNoteNumber, noteNumberFromFrequency } from '@/model/midi';
+import AutoCorrelateWorker from '@/model/worker/autocorrelateWorker?worker';
+import { useRafFn, useWindowSize } from '@vueuse/core';
+import { computed, ref, watch, watchEffect } from 'vue';
+import { NoteEvent, NoteEventWithFingeringAndAlternatives, TrackFingeringWithAlternatives } from '../model/types';
 
 const windowSize = useWindowSize();
 
-const conversion = computed(() => 25 / music.value.reduce((acc, tab) => Math.min(acc, tab.durationMs), Infinity));
+const conversion = computed(() => 25 / music.value.reduce((acc, tab) => Math.min(acc, tab.durationMs), 350));
 
 const offset = 200;
 
@@ -16,7 +18,13 @@ const props = defineProps<{
   instrument: { strings: number, frets: number }
 }>();
 
-const music = computed(() => props.music);
+const music = computed(() => props.music.map((tab: NoteEventWithFingeringAndAlternatives) => {
+  return {
+    ...tab,
+    startTimeMs: tab.startTimeMs + 5000,
+    success: false
+  };
+}));
 
 const tabsGroupedByStrings = computed(() => {
   return music.value.reduce((acc, tab) => {
@@ -25,7 +33,7 @@ const tabsGroupedByStrings = computed(() => {
     }
     acc[tab.fingering.string].push(tab);
     return acc;
-  }, {} as Record<string, NoteEventWithFingeringAndAlternatives[]>);
+  }, {} as Record<string, (NoteEventWithFingeringAndAlternatives & { success?: boolean })[]>);
 });
 
 const maxTimeMs = computed(() => {
@@ -36,18 +44,76 @@ const maxTimeMs = computed(() => {
 
 const tabs = ref<HTMLElement>();
 
-let playbackRateValue = 1;
-const playbackRate = computed({
-  get: () => playbackRateValue,
-  set: (value) => {
-    playbackRateValue = value;
-    if(animation.value) animation.value.playbackRate = value;
-  }
-});
 const playState = ref('idle');
-
 let animation = ref<Animation>();
-watch([music, maxTimeMs, conversion], () => {
+const playbackRate = ref(1);
+
+watchEffect(() => {
+  if(animation.value) animation.value.playbackRate = playbackRate.value;
+});
+
+
+
+let analyser: AnalyserNode;
+let dataArray = new Float32Array(4096 / 2);
+let audioContext = new window.AudioContext({
+  latencyHint: 'interactive',
+  sampleRate: 44100
+});
+navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+  let audioInput = audioContext.createMediaStreamSource(stream);
+  analyser = audioContext.createAnalyser();
+  audioInput.connect(analyser);
+});
+
+const detectionWorker = new AutoCorrelateWorker();
+
+const time = ref(0);
+const note = ref(0);
+const correlated = ref<any>({});
+const results = ref<{ record: { time: number, detected: number }[], noteEvent: NoteEvent }[]>([]);
+const detection = useRafFn(() => {
+  time.value = Number(animation.value?.currentTime ?? 0);
+
+  const playedNoteEventIndex =  music.value.findIndex(tab => tab.startTimeMs <= time.value && (tab.startTimeMs + tab.durationMs) >= time.value);
+  const playedNoteEvent = music.value[playedNoteEventIndex];
+  note.value = playedNoteEvent?.note ?? 0;
+
+  if(!playedNoteEvent) return;
+
+  analyser.getFloatTimeDomainData(dataArray);
+
+  detectionWorker.postMessage({
+    index: playedNoteEventIndex,
+    time: time.value,
+    buffer: dataArray,
+    sampleRate: audioContext.sampleRate,
+    expectedFrequency: frequencyFromNoteNumber(note.value)
+  });
+
+  detectionWorker.onmessage = (e) => {
+  
+    const { index, time, result } = e.data;
+
+    const playedNoteEvent = music.value[index];
+    const expectedNote = playedNoteEvent.note;
+
+    if (noteNumberFromFrequency(result.frequency) === expectedNote) {
+      playedNoteEvent.success = true;
+    }
+
+    // console.log(results.value);
+
+    const noteEvent = { note: playedNoteEvent.note, startTimeMs: playedNoteEvent.startTimeMs, durationMs: playedNoteEvent.durationMs };
+
+    results.value[index] = results.value[index] ?? { record: [], noteEvent };
+    results.value[index].record.push({ time, detected: noteNumberFromFrequency(result.frequency), result });
+    
+  }
+
+}, { fpsLimit: Math.ceil(audioContext.sampleRate / dataArray.length) });
+
+watch([music], () => {
   if(animation.value) animation.value?.cancel();
   animation.value = tabs.value?.animate(
     { transform: `translate(${-maxTimeMs.value * conversion.value}px)` },
@@ -57,20 +123,32 @@ watch([music, maxTimeMs, conversion], () => {
   if(!animation.value) return;
   animation.value.onfinish = () => {
     playState.value = 'finished';
+    music.value.forEach(tab => tab.success = false);
+    detection.pause();
   };
   animation.value.oncancel = () => {
     playState.value = 'idle';
+    music.value.forEach(tab => tab.success = false);
+    detection.pause();
   };
 }, { immediate: true });
 
 function play() {
   animation.value?.play();
   playState.value = 'running';
+  detection.resume();
 }
 
 function pause() {
   animation.value?.pause();
   playState.value = 'paused';
+  detection.pause();
+}
+
+function stop() {
+  animation.value?.cancel();
+  playState.value = 'idle';
+  detection.pause();
 }
 
 </script>
@@ -87,7 +165,7 @@ function pause() {
           ></div>
           <div 
             v-for="tab in tabsGroupedByStrings[string]"
-            class="note" :class="{ [`finger-${tab.fingering.finger}`]: true }"
+            class="note" :class="{ [tab.success ? `success` : `finger-${tab.fingering.finger}`]: true }"
             :style="{
               left: `${Math.floor(offset + tab.startTimeMs * conversion)}px`,
               width: `${Math.floor(tab.durationMs * conversion)}px`
@@ -102,8 +180,9 @@ function pause() {
 
   <button style="margin: 1rem;" @click="play()" v-if="playState !== 'running'">Start playing</button>
   <button style="margin: 1rem;" @click="pause()" v-else>Pause playing</button>
+  <button style="margin: 1rem;" @click="stop()">Stop playing</button>
   <input type="range" v-model="playbackRate" min="0.1" max="2" step="0.1" style="margin: 1rem;">
-
+  {{ playbackRate }} {{ animation?.playbackRate }}
   <div style="margin: 1rem;">
     <span class="tag finger-0">Open note</span>
     <span class="tag finger-1">Finger 1</span>
@@ -111,6 +190,14 @@ function pause() {
     <span class="tag finger-3">Finger 3</span>
     <span class="tag finger-4">Finger 4</span>
   </div>
+
+  <div>Time {{ time }}</div>
+
+  <div>Current note {{ note }}</div>
+
+  <div>Correlated note {{ correlated }}</div>
+
+  <pre>{{ JSON.stringify(results, null, 2) }}</pre>
 
 </template>
 
@@ -126,7 +213,7 @@ function pause() {
   overflow-x: scroll;
   margin-top: 50px;
   margin-bottom: 50px;
-  padding-bottom: 10px;
+  padding-bottom: 50px;
 }
 
 .indicator {
