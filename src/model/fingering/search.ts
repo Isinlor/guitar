@@ -1,6 +1,7 @@
+import { Alternatives, FingeringAlternatives, SoftConstraint, TrackStateStore } from "@/model/fingering/types";
 import { TrackFingeringWithAlternatives } from "../types";
 import { makeRandomTrackFingering } from "./fingering";
-import { computeComplexity } from "./penalties";
+import { computeComplexity, setupSoftConstraints } from "./penalties";
 
 export function mutateTrackFingering(trackFingering: TrackFingeringWithAlternatives, mutations: number) {
   const newTrackFingering = [...trackFingering];
@@ -16,13 +17,35 @@ export function mutateTrackFingering(trackFingering: TrackFingeringWithAlternati
   return newTrackFingering; 
 }
 
+export function mutateTrackState<S>(trackState: TrackStateStore<S>, alternatives: Alternatives<S>, mutations: number) {
+  const changes = [];
+  for (let i = 0; i < mutations; i++) {
+    const randomIndex = Math.floor(Math.random() * trackState.state.length);
+    const alternativesAtIndex = alternatives.getAlternatives(randomIndex);
+    const change = {
+      index: randomIndex,
+      oldState: trackState.state[randomIndex],
+      newState: alternativesAtIndex[Math.floor(Math.random() * alternativesAtIndex.length)]
+    };
+    changes.push(change);
+    trackState.change(change.index, change.oldState, change.newState);
+  }
+  return changes; 
+}
+
+export function revertTrackStateChanges<S>(trackState: TrackStateStore<S>, changes: { index: number, oldState: S, newState: S }[]) {
+  for (const change of [...changes].reverse()) {
+    trackState.change(change.index, change.newState, change.oldState);
+  }
+}
+
 export function iterativeLocalSearch(trackFingering: TrackFingeringWithAlternatives, iterations: number, attemptsPerIteration: number, disruption: number) {
   
   trackFingering = [...trackFingering];
 
   let bestComplexity = Infinity;
   for (let i = 0; i < iterations; i++) {
-    let candidateTrackFingering = localSearch(makeRandomTrackFingering(trackFingering), attemptsPerIteration, disruption);
+    let candidateTrackFingering = localSearchTrackFingering(makeRandomTrackFingering(trackFingering), attemptsPerIteration, disruption);
     let candidateComplexity = computeComplexity(candidateTrackFingering);
     if (candidateComplexity < bestComplexity) {
       trackFingering = candidateTrackFingering;
@@ -34,7 +57,21 @@ export function iterativeLocalSearch(trackFingering: TrackFingeringWithAlternati
   
 }
 
-export function localSearch(trackFingering: TrackFingeringWithAlternatives, attempts: number, disruption: number) {
+export function localSearchTrackFingering(trackFingering: TrackFingeringWithAlternatives, attempts: number, disruption: number) {
+
+  const softConstraint = setupSoftConstraints(trackFingering);
+  const alternatives = new FingeringAlternatives(trackFingering);
+  const trackStateStore = new TrackStateStore(trackFingering.map(note => note.fingering), [
+    softConstraint
+  ]);
+
+  localSearch(trackStateStore, softConstraint, alternatives, attempts, disruption);
+
+  return trackFingering.map((note, i) => ({ ...note, fingering: trackStateStore.state[i] }));
+
+}
+
+export function localSearchSlow(trackFingering: TrackFingeringWithAlternatives, attempts: number, disruption: number) {
 
   trackFingering = [...trackFingering];
 
@@ -49,6 +86,26 @@ export function localSearch(trackFingering: TrackFingeringWithAlternatives, atte
   }
 
   return trackFingering;
+
+}
+
+export function localSearch<S>(
+  trackState: TrackStateStore<S>,
+  softConstraint: SoftConstraint<S>,
+  alternatives: Alternatives<S>,
+  attempts: number, disruption: number
+) {
+
+  let trackFingeringComplexity = softConstraint.getPenalty();
+  while (attempts--) {
+    const changes = mutateTrackState(trackState, alternatives, disruption);
+    const newTrackFingeringComplexity = softConstraint.getPenalty();
+    if (newTrackFingeringComplexity <= trackFingeringComplexity) {
+      trackFingeringComplexity = newTrackFingeringComplexity;
+    } else {
+      revertTrackStateChanges(trackState, changes);
+    }
+  }
 
 }
 

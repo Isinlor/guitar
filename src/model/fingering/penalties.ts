@@ -1,4 +1,7 @@
-import { MidiNote, TrackFingering } from "../types";
+import { FingersCrossingPenalty, HandMovementPenalty, SimpleSoftConstraint } from "@/model/fingering/constraints";
+import { CountFrets, CountLessUsedFingeringsPerNote, CountUniqueFingerings, CountUniqueFretFinger, HighFingers, HighFrets } from "@/model/fingering/counters";
+import { CompositeSoftConstraint, SoftConstraint, WeightedSoftConstraint } from "@/model/fingering/types";
+import { Fingering, MidiNote, TrackFingering } from "../types";
 import { fingeringToString, fretFingerToString } from "./fingering";
 
 export function countFrets(trackFingering: TrackFingering) {
@@ -218,3 +221,19 @@ export function reportComplexity(trackFingering: TrackFingering) {
     handMovementPenalty: handMovementPenalty(trackFingering)
   };
 };
+
+export function setupSoftConstraints(trackFingering: TrackFingering): SoftConstraint<Fingering>  {
+  const softConstraints = [
+    new WeightedSoftConstraint(new CountFrets(trackFingering), 2),
+    new WeightedSoftConstraint(new HighFrets(trackFingering), 1),
+    new WeightedSoftConstraint(new HighFingers(trackFingering), 1),
+    new WeightedSoftConstraint(new CountLessUsedFingeringsPerNote(trackFingering), 1),
+    new WeightedSoftConstraint(new CountUniqueFretFinger(trackFingering), 3),
+    new WeightedSoftConstraint(new CountUniqueFingerings(trackFingering), 5),
+    new WeightedSoftConstraint(new FingersCrossingPenalty(trackFingering), 100),
+    new WeightedSoftConstraint(new SimpleSoftConstraint((trackFingering: TrackFingering) => fingerVelocityPenalty(trackFingering), trackFingering), 1),
+    new WeightedSoftConstraint(new SimpleSoftConstraint((trackFingering: TrackFingering) => fingerStringJumpingPenalty(trackFingering), trackFingering), 1),
+    new WeightedSoftConstraint(new HandMovementPenalty(trackFingering), 10)
+  ];
+  return new CompositeSoftConstraint(softConstraints);
+}

@@ -12,8 +12,16 @@ export type NoteEventWithFingering = NoteEvent & {
   fingering: Fingering;
 }
 
+export type NoteEventWithHandPosition = NoteEvent & {
+  handPosition: HandPosition;
+}
+
 export type NoteEventWithFingeringAlternatives = NoteEvent & {
   fingeringAlternatives: FingeringAlternatives;
+}
+
+export type NoteEventWithHandPositionAlternatives = NoteEvent & {
+  handPositionAlternatives: HandPosition[];
 }
 
 export type NoteEventWithFingeringAndAlternatives = NoteEventWithFingering & NoteEventWithFingeringAlternatives;
@@ -26,6 +34,8 @@ export type StringFret = {
   string: number; // The number of the string (1-indexed).
   fret: number; // The number of the fret (0 for open string).
 };
+
+export type HandPosition = number; // The number indicating the fret where index finger is located.
 
 export type StringFretAlternatives = StringFret[];
 
