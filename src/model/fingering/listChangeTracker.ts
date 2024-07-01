@@ -6,19 +6,18 @@ export type ListChangesUpdate = {
 
 export class ListChangesTracker {
   private list: number[];
-  private changes: Map<number, [number, number]>;
+  private changes: [number, number, number][];
 
   constructor(initialList: number[]) {
-    // A copy is created to ensure the original list isn't modified, maintaining immutability
     this.list = [...initialList];
-    this.changes = new Map();
+    this.changes = [];
     this.initializeChanges();
   }
 
   private initializeChanges() {
     for (let i = 1; i < this.list.length; i++) {
       if (this.list[i] !== this.list[i - 1]) {
-        this.changes.set(i, [this.list[i - 1], this.list[i]]);
+        this.changes.push([i, this.list[i - 1], this.list[i]]);
       }
     }
   }
@@ -28,53 +27,92 @@ export class ListChangesTracker {
       "Index out of bounds"
     );
 
+    this.getValue(index);
+
     this.list[index] = to;
 
     return this.updateChanges(index);
   }
 
   private updateChanges(index: number): ListChangesUpdate[] {
-    // We consider the previous, current, and next elements to properly handle transitions
     const prev = index > 0 ? this.list[index - 1] : null;
     const current = this.list[index];
     const next = index < this.list.length - 1 ? this.list[index + 1] : null;
 
     const updates: ListChangesUpdate[] = [];
 
-    // We only record a change if there's a transition.
     if (prev !== null) {
       updates.push(...this.updateChange(index, prev, current));
     }
 
-    // Similarly, we update or remove the change for the next index based on whether there's a transition
     if (next !== null) {
-      updates.push(...this.updateChange(index  + 1, current, next));
+      updates.push(...this.updateChange(index + 1, current, next));
     }
 
     return updates;
   }
 
-  private updateChange(index: number, prev: number, current: number): ListChangesUpdate[] {
+  private updateChange(listIndex: number, prev: number, current: number): ListChangesUpdate[] {
     const updates: ListChangesUpdate[] = [];
-    const oldChange = this.changes.get(index);
-    if (oldChange) updates.push({ type: "remove", index, change: oldChange });
-    if (prev !== current) {
-      this.changes.set(index, [prev, current]);
-      updates.push({ type: "add", index, change: [prev, current] });
-    } else if(oldChange !== undefined) {
-      // If elements become the same, we remove the old change.
-      this.changes.delete(index);
+    const changeIndex = this.getChangeIndex(listIndex);
+    
+    // Remove old change if it exists
+    if (changeIndex !== undefined && this.changes[changeIndex][0] === listIndex) {
+      const oldChange = this.changes[changeIndex];
+      updates.push({ type: "remove", index: listIndex, change: [oldChange[1], oldChange[2]] });
+      this.changes.splice(changeIndex, 1);
     }
+  
+    // Add new change if values are different
+    if (prev !== current) {
+      const insertIndex = changeIndex === undefined ? 0 : changeIndex + 1;
+      this.changes.splice(insertIndex, 0, [listIndex, prev, current]);
+      updates.push({ type: "add", index: listIndex, change: [prev, current] });
+    }
+  
     return updates;
+  }
+
+  private getChangeIndex(listIndex: number): number | undefined {
+    let low = 0, high = this.changes.length - 1;
+    
+    while (low <= high) {
+      const mid = Math.floor((low + high) / 2);
+      if (this.changes[mid][0] <= listIndex) {
+        if (mid === this.changes.length - 1 || this.changes[mid + 1][0] > listIndex) {
+          return mid; // Found the last change <= listIndex
+        }
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+  
+    return undefined;
+  }
+
+  private getValue(index: number): number {
+    const lastChangeIndex = this.getChangeIndex(index);
+  
+    let value;
+    if (lastChangeIndex === undefined) {
+      value = this.list[0];
+    } else {
+      value = this.changes[lastChangeIndex][2];
+    }
+  
+    if (value !== this.list[index]) {
+      throw new Error(`Calculated value ${value} at index ${lastChangeIndex} of ${JSON.stringify(this.changes)} does not match list value ${this.list} at index ${index}`);
+    }
+  
+    return value;
   }
 
   getChanges(): [number, number, number][] {
-    // We convert the Map to an array for easier consumption by the user
-    return Array.from(this.changes.entries()).map(([index, [from, to]]) => [index, from, to]);
+    return [...this.changes];
   }
 
   getList(): number[] {
-    // We return a copy to prevent external modification of the internal state
     return [...this.list];
   }
 }
