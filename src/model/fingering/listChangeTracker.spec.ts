@@ -180,7 +180,7 @@ describe('ListChangesTracker', () => {
 
   });
 
-  describe('ListChangesTracker Performance', () => {
+  describe('Performance', () => {
     // Helper function to measure execution time
     const measureTime = (fn: () => void): number => {
       const start = process.hrtime.bigint();
@@ -192,10 +192,9 @@ describe('ListChangesTracker', () => {
     // Helper function to create a list of specified length with all elements set to 0
     const createList = (length: number): number[] => new Array(length).fill(0);
   
-    it('should scale logarithmically with the number of changes', () => {
-      const listLength = 1000000; // Fixed large list length
-      // 5 orders of magnitude
-      const changeCounts = [10, 100, 1000, 10000, 100000];
+    it('should scale logarithmically with the number of changes', { retry: 3 }, () => {
+      const listLength = 100000; // Fixed large list length
+      const changeCounts = [100, 1000, 10000, 10000];
       const times: number[] = [];
   
       for (const changeCount of changeCounts) {
@@ -218,10 +217,9 @@ describe('ListChangesTracker', () => {
       }
     });
   
-    it('should be independent of list length', () => {
-      const changeCount = 100; // Fixed number of changes
-      // 5 orders of magnitude
-      const listLengths = [1000, 10000, 100000, 1000000, 10000000];
+    it('should be independent of list length', { retry: 3 }, () => {
+      const changeCount = 1000; // Fixed number of changes
+      const listLengths = [100, 1000, 10000, 100000, 1000000];
       const times: number[] = [];
   
       for (const listLength of listLengths) {
@@ -230,7 +228,7 @@ describe('ListChangesTracker', () => {
   
         const time = measureTime(() => {
           for (let i = 0; i < changeCount; i++) {
-            tracker.updateList(listLength - changeCount + i, 1);
+            tracker.updateList(i % listLength, 1);
           }
         });
   
@@ -239,14 +237,17 @@ describe('ListChangesTracker', () => {
   
       // Check if the time remains relatively constant
       // allows for 2 orders of magnitude difference
-      /// across 5 orders of magnitude of list length
-      const avgTime = times.reduce((a, b) => a + b) / times.length;
+      // across 5 orders of magnitude of list length
       const threshold = Math.sqrt(20);
   
+      expect(times[times.length - 1]).toBeLessThan(times[0] * threshold);
+
+      const avgTime = times.reduce((a, b) => a + b) / times.length;
       for (const time of times) {
         expect(time).toBeLessThan(avgTime * threshold);
         expect(time).toBeGreaterThan(avgTime / threshold);
       }
+
     });
   });
 

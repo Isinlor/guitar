@@ -74,21 +74,16 @@ export class ListChangesTracker {
     return updates;
   }
 
-  private getValue(index: number): number {
-    if (index < 0 || index > this.length - 1) throw new Error(
-      `Index ${index} out of bounds. List length is ${this.length}.`
+  private getValue(listIndex: number): number {
+    if (listIndex < 0 || listIndex > this.length - 1) throw new Error(
+      `Index ${listIndex} out of bounds. List length is ${this.length}.`
     );
 
-    const lastChange = this.changes.lowerBound([index, 0, 0]);
+    const lastChangeBeforeIndex = this.changes.lowerBound([listIndex, 0, 0]);
   
-    let value;
-    if (!lastChange) {
-      value = this.initialValue;
-    } else {
-      value = lastChange.getValue()[2];
-    }
-  
-    return value;
+    if (!lastChangeBeforeIndex) return this.initialValue;
+
+    return lastChangeBeforeIndex.getValue()[2];
   }
 
   getChanges(): [number, number, number][] {
