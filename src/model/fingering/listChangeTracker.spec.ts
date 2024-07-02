@@ -3,6 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { ListChangesTracker } from '@/model/fingering/listChangeTracker';
 
 describe('ListChangesTracker', () => {
+
+  it('should handle an empty list', () => {
+    const tracker = new ListChangesTracker([]);
+    expect(tracker.getChanges()).toEqual([]);
+    expect(tracker.getList()).toEqual([]);
+  });
+
   it('should handle a list with one element and update it', () => {
     const tracker = new ListChangesTracker([0]);
     expect(tracker.getChanges()).toEqual([]);
@@ -177,6 +184,124 @@ describe('ListChangesTracker', () => {
       [1, 7, 8],
       [2, 8, 9],
     ]);
+
+  });
+
+  describe('->reset()', () => {
+
+    it('should reset element in a list with one element', () => {
+      const tracker = new ListChangesTracker([0]);
+      expect(tracker.getChanges()).toEqual([]);
+      const updates = tracker.reset(0);
+      expect(updates).toEqual([]);
+      expect(tracker.getList()).toEqual([undefined]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset first element in a list with two same elements', () => {
+      const tracker = new ListChangesTracker([0, 0]);
+      const updates = tracker.reset(0);
+      expect(updates).toEqual([]);
+      expect(tracker.getList()).toEqual([0, 0]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset second element in a list with two same elements', () => {
+      const tracker = new ListChangesTracker([0, 0]);
+      const updates = tracker.reset(1);
+      expect(updates).toEqual([]);
+      expect(tracker.getList()).toEqual([0, 0]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset first element in a list with two different elements', () => {
+      const tracker = new ListChangesTracker([0, 1]);
+      const updates = tracker.reset(0); // updateList(0, 1) is equivalent
+      expect(tracker.getList()).toEqual([1, 1]);
+      expect(updates).toEqual([
+        { type: "remove", index: 1, change: [0, 1] }
+      ]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset second element in a list with two different elements', () => {
+      const tracker = new ListChangesTracker([0, 1]);
+      const updates = tracker.reset(1); // updateList(1, 0) is equivalent
+      expect(tracker.getList()).toEqual([0, 0]);
+      expect(updates).toEqual([
+        { type: "remove", index: 1, change: [0, 1] }
+      ]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset first odd element in a list with three elements', () => {
+      const tracker = new ListChangesTracker([1, 0, 0]);
+      const updates = tracker.reset(0); // updateList(0, 0) is equivalent
+      expect(tracker.getList()).toEqual([0, 0, 0]);
+      expect(updates).toEqual([
+        { type: "remove", index: 1, change: [1, 0] }
+      ]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset middle odd element in a list with three elements', () => {
+      const tracker = new ListChangesTracker([0, 1, 0]);
+      const updates = tracker.reset(1); // updateList(1, 0) is equivalent
+      expect(tracker.getList()).toEqual([0, 0, 0]);
+      expect(updates).toEqual([
+        { type: "remove", index: 1, change: [0, 1] },
+        { type: "remove", index: 2, change: [1, 0] }
+      ]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset last odd element in a list with three elements', () => {
+      const tracker = new ListChangesTracker([0, 0, 1]);
+      const updates = tracker.reset(2); // updateList(2, 0) is equivalent
+      expect(tracker.getList()).toEqual([0, 0, 0]);
+      expect(updates).toEqual([
+        { type: "remove", index: 2, change: [0, 1] }
+      ]);
+      expect(tracker.getChanges()).toEqual([]);
+    });
+
+    it('should reset first element in a list with three different elements', () => {
+      const tracker = new ListChangesTracker([1, 2, 3]);
+      const updates = tracker.reset(0); // updateList(0, 2) is equivalent
+      expect(tracker.getList()).toEqual([2, 2, 3]);
+      expect(updates).toEqual([
+        { type: "remove", index: 1, change: [1, 2] }
+      ]);
+      expect(tracker.getChanges()).toEqual([
+        [2, 2, 3]
+      ]);
+    });
+
+    it('should reset second element in a list with three different elements', () => {
+      const tracker = new ListChangesTracker([1, 2, 3]);
+      const updates = tracker.reset(1); // updateList(1, 1) is equivalent
+      expect(tracker.getList()).toEqual([1, 1, 3]);
+      expect(updates).toEqual([
+        { type: "remove", index: 1, change: [1, 2] },
+        { type: "remove", index: 2, change: [2, 3] },
+        { type: "add", index: 2, change: [1, 3] }
+      ]);
+      expect(tracker.getChanges()).toEqual([
+        [2, 1, 3]
+      ]);
+    });
+
+    it('should reset third element in a list with three different elements', () => {
+      const tracker = new ListChangesTracker([1, 2, 3]);
+      const updates = tracker.reset(2); // updateList(2, 2) is equivalent
+      expect(tracker.getList()).toEqual([1, 2, 2]);
+      expect(updates).toEqual([
+        { type: "remove", index: 2, change: [2, 3] }
+      ]);
+      expect(tracker.getChanges()).toEqual([
+        [1, 1, 2]
+      ]);
+    });
 
   });
 
