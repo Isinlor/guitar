@@ -5,48 +5,49 @@ export type ListChangesUpdate = {
 };
 
 export class ListChangesTracker {
-  private list: number[];
+
+  private length: number;
+  private initialValue: number;
   private changes: [number, number, number][];
 
   constructor(initialList: number[]) {
-    this.list = [...initialList];
     this.changes = [];
-    this.initializeChanges();
+    this.length = initialList.length;
+    this.initialValue = initialList[0];
+    this.initializeChanges(initialList);
   }
 
-  private initializeChanges() {
-    for (let i = 1; i < this.list.length; i++) {
-      if (this.list[i] !== this.list[i - 1]) {
-        this.changes.push([i, this.list[i - 1], this.list[i]]);
+  private initializeChanges(initialList: number[]) {
+    for (let i = 1; i < this.length; i++) {
+      if (initialList[i] !== initialList[i - 1]) {
+        this.changes.push([i, initialList[i - 1], initialList[i]]);
       }
     }
   }
 
-  updateList(index: number, to: number): ListChangesUpdate[] {
-    if (index < 0 || index >= this.list.length) throw new Error(
-      "Index out of bounds"
+  updateList(listIndex: number, to: number): ListChangesUpdate[] {
+    if (listIndex < 0 || listIndex > this.length - 1) throw new Error(
+      `Index ${listIndex} out of bounds. List length is ${this.length}.`
     );
 
-    this.getValue(index);
+    const prev = listIndex > 0 ? this.getValue(listIndex - 1) : undefined;
+    const next = listIndex < this.length - 1 ? this.getValue(listIndex + 1) : undefined;
 
-    this.list[index] = to;
+    if (listIndex === 0) this.initialValue = to;
 
-    return this.updateChanges(index);
+    return this.updateChanges(listIndex, prev, to, next);
   }
 
-  private updateChanges(index: number): ListChangesUpdate[] {
-    const prev = index > 0 ? this.list[index - 1] : null;
-    const current = this.list[index];
-    const next = index < this.list.length - 1 ? this.list[index + 1] : null;
+  private updateChanges(listIndex: number, prev: number | undefined, to: number, next: number | undefined): ListChangesUpdate[] {
 
     const updates: ListChangesUpdate[] = [];
 
-    if (prev !== null) {
-      updates.push(...this.updateChange(index, prev, current));
+    if (prev !== undefined) {
+      updates.push(...this.updateChange(listIndex, prev, to));
     }
 
-    if (next !== null) {
-      updates.push(...this.updateChange(index + 1, current, next));
+    if (next !== undefined) {
+      updates.push(...this.updateChange(listIndex + 1, to, next));
     }
 
     return updates;
@@ -65,8 +66,13 @@ export class ListChangesTracker {
   
     // Add new change if values are different
     if (prev !== current) {
-      const insertIndex = changeIndex === undefined ? 0 : changeIndex + 1;
-      this.changes.splice(insertIndex, 0, [listIndex, prev, current]);
+      const newChange = [listIndex, prev, current] as [number, number, number];
+      const insertIndex = this.changes.findIndex(change => change[0] > listIndex);
+      if (insertIndex === -1) {
+        this.changes.push(newChange);
+      } else {
+        this.changes.splice(insertIndex, 0, newChange);
+      }
       updates.push({ type: "add", index: listIndex, change: [prev, current] });
     }
   
@@ -92,17 +98,18 @@ export class ListChangesTracker {
   }
 
   private getValue(index: number): number {
+
+    if (index < 0 || index > this.length - 1) throw new Error(
+      `Index ${index} out of bounds. List length is ${this.length}.`
+    );
+
     const lastChangeIndex = this.getChangeIndex(index);
   
     let value;
     if (lastChangeIndex === undefined) {
-      value = this.list[0];
+      value = this.initialValue;
     } else {
       value = this.changes[lastChangeIndex][2];
-    }
-  
-    if (value !== this.list[index]) {
-      throw new Error(`Calculated value ${value} at index ${lastChangeIndex} of ${JSON.stringify(this.changes)} does not match list value ${this.list} at index ${index}`);
     }
   
     return value;
@@ -113,6 +120,6 @@ export class ListChangesTracker {
   }
 
   getList(): number[] {
-    return [...this.list];
+    return Array.from({ length: this.length }, (_, i) => this.getValue(i));
   }
 }

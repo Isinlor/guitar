@@ -145,24 +145,38 @@ describe('ListChangesTracker', () => {
   });
 
   it('should allow to change three same elements to three different elements in any order', () => {
+    
     const tracker = new ListChangesTracker([0, 0, 0]);
+    
     const updates1 = tracker.updateList(2, 9);
     expect(updates1).toEqual([{ type: "add", index: 2, change: [0, 9] }]);
+    expect(tracker.getList()).toEqual([0, 0, 9]);
+    expect(tracker.getChanges()).toEqual([
+      [2, 0, 9],
+    ]);
+
     const updates2 = tracker.updateList(1, 8);
     expect(updates2).toEqual([
       { type: "add", index: 1, change: [0, 8] },
       { type: "remove", index: 2, change: [0, 9] },
       { type: "add", index: 2, change: [8, 9] }
     ]);
+    expect(tracker.getList()).toEqual([0, 8, 9]);
+    expect(tracker.getChanges()).toEqual([
+      [1, 0, 8],
+      [2, 8, 9],
+    ]);
+
     const updates3 = tracker.updateList(0, 7);
     expect(updates3).toEqual([
       { type: "remove", index: 1, change: [0, 8] },
       { type: "add", index: 1, change: [7, 8] }
     ]);
     expect(tracker.getList()).toEqual([7, 8, 9]);
-    expect(tracker.getChanges().sort(([a], [b]) => a - b)).toEqual([
+    expect(tracker.getChanges()).toEqual([
       [1, 7, 8],
       [2, 8, 9],
     ]);
+
   });
 });
