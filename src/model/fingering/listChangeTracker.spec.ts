@@ -179,4 +179,75 @@ describe('ListChangesTracker', () => {
     ]);
 
   });
+
+  describe('ListChangesTracker Performance', () => {
+    // Helper function to measure execution time
+    const measureTime = (fn: () => void): number => {
+      const start = process.hrtime.bigint();
+      fn();
+      const end = process.hrtime.bigint();
+      return Number(end - start) / 1e6; // Convert to milliseconds
+    };
+  
+    // Helper function to create a list of specified length with all elements set to 0
+    const createList = (length: number): number[] => new Array(length).fill(0);
+  
+    it('should scale logarithmically with the number of changes', () => {
+      const listLength = 1000000; // Fixed large list length
+      // 5 orders of magnitude
+      const changeCounts = [10, 100, 1000, 10000, 100000];
+      const times: number[] = [];
+  
+      for (const changeCount of changeCounts) {
+        const list = createList(listLength);
+        const tracker = new ListChangesTracker(list);
+  
+        const time = measureTime(() => {
+          for (let i = 0; i < changeCount; i++) {
+            tracker.updateList(i, 1);
+          }
+        });
+  
+        times.push(time / changeCount);
+      }
+  
+      // Check if the time increases logarithmically
+      for (let i = 1; i < times.length; i++) {
+        const ratio = times[i] / times[i - 1];
+        expect(ratio).toBeLessThan(2); // Logarithmic growth should be less than linear
+      }
+    });
+  
+    it('should be independent of list length', () => {
+      const changeCount = 100; // Fixed number of changes
+      // 5 orders of magnitude
+      const listLengths = [1000, 10000, 100000, 1000000, 10000000];
+      const times: number[] = [];
+  
+      for (const listLength of listLengths) {
+        const list = createList(listLength);
+        const tracker = new ListChangesTracker(list);
+  
+        const time = measureTime(() => {
+          for (let i = 0; i < changeCount; i++) {
+            tracker.updateList(listLength - changeCount + i, 1);
+          }
+        });
+  
+        times.push(time / changeCount);
+      }
+  
+      // Check if the time remains relatively constant
+      // allows for 2 orders of magnitude difference
+      /// across 5 orders of magnitude of list length
+      const avgTime = times.reduce((a, b) => a + b) / times.length;
+      const threshold = Math.sqrt(20);
+  
+      for (const time of times) {
+        expect(time).toBeLessThan(avgTime * threshold);
+        expect(time).toBeGreaterThan(avgTime / threshold);
+      }
+    });
+  });
+
 });
