@@ -1,3 +1,5 @@
+import { BinarySearchTree } from '@datastructures-js/binary-search-tree';
+
 export type ListChangesUpdate = {
   type: "add" | "remove";
   index: number;
@@ -5,13 +7,12 @@ export type ListChangesUpdate = {
 };
 
 export class ListChangesTracker {
-
   private length: number;
   private initialValue: number;
-  private changes: [number, number, number][];
+  private changes: BinarySearchTree<[number, number, number]>;
 
   constructor(initialList: number[]) {
-    this.changes = [];
+    this.changes = new BinarySearchTree<[number, number, number]>((a, b) => a[0] - b[0]);
     this.length = initialList.length;
     this.initialValue = initialList[0];
     this.initializeChanges(initialList);
@@ -20,7 +21,7 @@ export class ListChangesTracker {
   private initializeChanges(initialList: number[]) {
     for (let i = 1; i < this.length; i++) {
       if (initialList[i] !== initialList[i - 1]) {
-        this.changes.push([i, initialList[i - 1], initialList[i]]);
+        this.changes.insert([i, initialList[i - 1], initialList[i]]);
       }
     }
   }
@@ -39,7 +40,6 @@ export class ListChangesTracker {
   }
 
   private updateChanges(listIndex: number, prev: number | undefined, to: number, next: number | undefined): ListChangesUpdate[] {
-
     const updates: ListChangesUpdate[] = [];
 
     if (prev !== undefined) {
@@ -55,68 +55,48 @@ export class ListChangesTracker {
 
   private updateChange(listIndex: number, prev: number, current: number): ListChangesUpdate[] {
     const updates: ListChangesUpdate[] = [];
-    const changeIndex = this.getChangeIndex(listIndex);
+    const changeNode = this.changes.find([listIndex, 0, 0]);
     
     // Remove old change if it exists
-    if (changeIndex !== undefined && this.changes[changeIndex][0] === listIndex) {
-      const oldChange = this.changes[changeIndex];
+    if (changeNode && changeNode.getValue()[0] === listIndex) {
+      const oldChange = changeNode.getValue();
       updates.push({ type: "remove", index: listIndex, change: [oldChange[1], oldChange[2]] });
-      this.changes.splice(changeIndex, 1);
+      this.changes.remove(oldChange);
     }
   
     // Add new change if values are different
     if (prev !== current) {
-      const newChange = [listIndex, prev, current] as [number, number, number];
-      const insertIndex = this.changes.findIndex(change => change[0] > listIndex);
-      if (insertIndex === -1) {
-        this.changes.push(newChange);
-      } else {
-        this.changes.splice(insertIndex, 0, newChange);
-      }
+      const newChange: [number, number, number] = [listIndex, prev, current];
+      this.changes.insert(newChange);
       updates.push({ type: "add", index: listIndex, change: [prev, current] });
     }
   
     return updates;
   }
 
-  private getChangeIndex(listIndex: number): number | undefined {
-    let low = 0, high = this.changes.length - 1;
-    
-    while (low <= high) {
-      const mid = Math.floor((low + high) / 2);
-      if (this.changes[mid][0] <= listIndex) {
-        if (mid === this.changes.length - 1 || this.changes[mid + 1][0] > listIndex) {
-          return mid; // Found the last change <= listIndex
-        }
-        low = mid + 1;
-      } else {
-        high = mid - 1;
-      }
-    }
-  
-    return undefined;
-  }
-
   private getValue(index: number): number {
-
     if (index < 0 || index > this.length - 1) throw new Error(
       `Index ${index} out of bounds. List length is ${this.length}.`
     );
 
-    const lastChangeIndex = this.getChangeIndex(index);
+    const lastChange = this.changes.lowerBound([index, 0, 0]);
   
     let value;
-    if (lastChangeIndex === undefined) {
+    if (!lastChange) {
       value = this.initialValue;
     } else {
-      value = this.changes[lastChangeIndex][2];
+      value = lastChange.getValue()[2];
     }
   
     return value;
   }
 
   getChanges(): [number, number, number][] {
-    return [...this.changes];
+    const result: [number, number, number][] = [];
+    this.changes.traverseInOrder((node) => {
+      result.push(node.getValue());
+    });
+    return result;
   }
 
   getList(): number[] {
