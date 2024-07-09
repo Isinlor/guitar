@@ -7,9 +7,9 @@ export type ListChangesUpdate<T> = {
 };
 
 export class ListChangesTracker<T> {
-  private length: number;
-  private initialValue: T | undefined;
-  private changes: BinarySearchTree<[number, T, T]>;
+  protected length: number;
+  protected initialValue: T | undefined;
+  protected changes: BinarySearchTree<[number, T, T]>;
 
   constructor(initialList: T[]) {
     this.changes = new BinarySearchTree((a, b) => a[0] - b[0]);
@@ -62,7 +62,7 @@ export class ListChangesTracker<T> {
     return [];
   }
 
-  private updateChanges(listIndex: number, prev: T | undefined, to: T, next: T | undefined): ListChangesUpdate<T>[] {
+  protected updateChanges(listIndex: number, prev: T | undefined, to: T, next: T | undefined): ListChangesUpdate<T>[] {
     const updates: ListChangesUpdate<T>[] = [];
 
     if (prev !== undefined) {
@@ -97,7 +97,7 @@ export class ListChangesTracker<T> {
     return updates;
   }
 
-  private getValue(listIndex: number): T | undefined {
+  getValue(listIndex: number): T | undefined {
     if (listIndex < 0 || listIndex > this.length - 1) throw new Error(
       `Index ${listIndex} out of bounds. List length is ${this.length}.`
     );
