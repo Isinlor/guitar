@@ -36,7 +36,17 @@ export class ListChangesTracker<T> {
 
     if (listIndex === 0) this.initialValue = to;
 
-    return this.updateChanges(listIndex, prev, to, next);
+    const updates: ListChangesUpdate<T>[] = [];
+
+    if (prev !== undefined) {
+      updates.push(...this.updateChange(listIndex, prev, to));
+    }
+
+    if (next !== undefined) {
+      updates.push(...this.updateChange(listIndex + 1, to, next));
+    }
+
+    return updates;
   }
 
   /**
@@ -62,21 +72,7 @@ export class ListChangesTracker<T> {
     return [];
   }
 
-  protected updateChanges(listIndex: number, prev: T | undefined, to: T, next: T | undefined): ListChangesUpdate<T>[] {
-    const updates: ListChangesUpdate<T>[] = [];
-
-    if (prev !== undefined) {
-      updates.push(...this.updateChange(listIndex, prev, to));
-    }
-
-    if (next !== undefined) {
-      updates.push(...this.updateChange(listIndex + 1, to, next));
-    }
-
-    return updates;
-  }
-
-  private updateChange(listIndex: number, prev: T, current: T): ListChangesUpdate<T>[] {
+  private updateChange(listIndex: number, left: T, right: T): ListChangesUpdate<T>[] {
     const updates: ListChangesUpdate<T>[] = [];
     const changeNode = this.changes.find([listIndex, undefined as any, undefined as any]);
 
@@ -88,10 +84,10 @@ export class ListChangesTracker<T> {
     }
 
     // Add new change if values are different
-    if (prev !== current) {
-      const newChange: [number, T, T] = [listIndex, prev, current];
+    if (left !== right) {
+      const newChange: [number, T, T] = [listIndex, left, right];
       this.changes.insert(newChange);
-      updates.push({ type: "add", index: listIndex, change: [prev, current] });
+      updates.push({ type: "add", index: listIndex, change: [left, right] });
     }
 
     return updates;
