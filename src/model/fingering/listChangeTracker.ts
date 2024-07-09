@@ -110,6 +110,11 @@ export class ListChangesTracker<T> {
     return change ? change.getValue() : undefined;
   }
 
+  getChangeBefore(listIndex: number): [number, T, T] | undefined {
+    const change = this.changes.lowerBound([listIndex, undefined as any, undefined as any], false);
+    return change ? change.getValue() : undefined;
+  }
+
   getChanges(): [number, T, T][] {
     const result: [number, T, T][] = [];
     this.changes.traverseInOrder((node) => {
@@ -137,29 +142,60 @@ export class ListChangesTrackerWithPlaceholders<T> extends ListChangesTracker<T 
     this.primaryTracker = new ListChangesTracker(initialList);
   }
 
-  updateList(listIndex: number, to: T): ListChangesUpdate<T | null>[] {
+  updateList(listIndex: number, to: T | null): ListChangesUpdate<T | null>[] {
 
     const updates: ListChangesUpdate<T | null>[] = [];
 
     this.primaryTracker.updateList(listIndex, to);
 
-    const prev = listIndex > 0 ? this.getValue(listIndex - 1) : undefined;
-    const nextChange = this.primaryTracker.getChangeAfter(listIndex);
-    const endOfPlaceholdersChange = nextChange && nextChange[2] === null ?
-      this.primaryTracker.getChangeAfter(nextChange[0]) : undefined;
+    if (to !== null) {
 
-    if (listIndex === 0) this.initialValue = to;
+      const prev = listIndex > 0 ? this.getValue(listIndex - 1) : undefined;
+      const nextChange = this.primaryTracker.getChangeAfter(listIndex);
+      const endOfPlaceholdersChange = nextChange && nextChange[2] === null ?
+        this.primaryTracker.getChangeAfter(nextChange[0]) : undefined;
   
-    if (prev !== undefined) {
-      updates.push(...this.updateChange(listIndex, prev, to));
-    }
+      if (listIndex === 0) this.initialValue = to;
+    
+      if (prev !== undefined) {
+        updates.push(...this.updateChange(listIndex, prev, to));
+      }
+  
+      if (nextChange) {
+        updates.push(...this.updateChange(nextChange[0], to, nextChange[2] !== null ? nextChange[2] : to));
+      }
+  
+      if (endOfPlaceholdersChange) {
+        updates.push(...this.updateChange(endOfPlaceholdersChange[0], to, endOfPlaceholdersChange[2]));
+      }
 
-    if (nextChange) {
-      updates.push(...this.updateChange(nextChange[0], to, nextChange[2] !== null ? nextChange[2] : to));
-    }
+    } else {
 
-    if (endOfPlaceholdersChange) {
-      updates.push(...this.updateChange(endOfPlaceholdersChange[0], to, endOfPlaceholdersChange[2]));
+      const prev = listIndex > 0 ? this.getValue(listIndex - 1) : undefined;
+      const nextChange = this.primaryTracker.getChangeAfter(listIndex);
+      const endOfPlaceholdersChange = nextChange && nextChange[2] === null ?
+        this.primaryTracker.getChangeAfter(nextChange[0]) : undefined;
+  
+      if (listIndex === 0) this.initialValue = to;
+    
+      if (prev !== undefined) {
+        updates.push(...this.updateChange(listIndex, prev, prev));
+      }
+  
+      if (nextChange && nextChange[2] == null) {
+        
+        updates.push(...this.updateChange(nextChange[0], null, null));
+
+        if (endOfPlaceholdersChange) {
+          updates.push(...this.updateChange(endOfPlaceholdersChange[0], prev ?? null, endOfPlaceholdersChange[2]));
+        }
+
+      }
+
+      if (nextChange && nextChange[2] !== null) {
+        updates.push(...this.updateChange(nextChange[0], prev ?? null, nextChange[2]));
+      }
+
     }
 
     return updates;
