@@ -189,253 +189,342 @@ describe('ListChangesTracker', () => {
 
   describe('placeholders', () => {
 
-    it('should allow a single element list with a placeholder', () => {
+    describe('initialize', () => {
+      
+      it('should allow a single element list with a placeholder', () => {
 
-      const tracker = new ListChangesTrackerWithPlaceholders([null]);
-      expect(tracker.getList()).toEqual([null]);
-      expect(tracker.getChanges()).toEqual([]);
-
-    });
-
-    it('should allow updating a single element list with a placeholder', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null]);
-      expect(tracker.getList()).toEqual([null]);
-      expect(tracker.getChanges()).toEqual([]);
-
-      const updates = tracker.updateList(0, 1);
-      expect(updates).toEqual([]);
-      expect(tracker.getList()).toEqual([1]);
-
-    });
-
-    it('should allow two element list of placeholder', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders([null, null]);
-      expect(tracker.getList()).toEqual([null, null]);
-      expect(tracker.getChanges()).toEqual([]);
-
-    });
-
-    it('should update first element in list of two placeholder', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null]);
-      expect(tracker.getList()).toEqual([null, null]);
-      expect(tracker.getChanges()).toEqual([]);
-
-      const updates = tracker.updateList(0, 1);
-      expect(updates).toEqual([]);
-      expect(tracker.getList()).toEqual([1, 1]);
-
-    });
-
-    it('should update second element in list of two placeholder', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null]);
-      expect(tracker.getList()).toEqual([null, null]);
-      expect(tracker.getChanges()).toEqual([]);
-
-      const updates = tracker.updateList(1, 1);
-      expect(updates).toEqual([
-        { type: "add", index: 1, change: [null, 1] }
-      ]);
-      expect(tracker.getList()).toEqual([null, 1]);
-
-    });
-
-    it('should update value in list of value followed by a placeholder', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([1, null]);
-      expect(tracker.getList()).toEqual([1, 1]);
-      expect(tracker.getChanges()).toEqual([]);
-
-      const updates = tracker.updateList(0, 2);
-      expect(tracker.getList()).toEqual([2, 2]);
-      expect(updates).toEqual([]);
-
-    });
-
-    it('should update value in list of placeholder followed by a value', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, 1]);
-      expect(tracker.getList()).toEqual([null, 1]);
-      expect(tracker.getChanges()).toEqual([
-        [1, null, 1]
-      ]);
-
-      const updates = tracker.updateList(1, 2);
-      expect(tracker.getList()).toEqual([null, 2]);
-      expect(updates).toEqual([
-        { type: "remove", index: 1, change: [null, 1] },
-        { type: "add", index: 1, change: [null, 2] }
-      ]);
-      expect(tracker.getChanges()).toEqual([
-        [1, null, 2]
-      ]);
-
-    });
-
-    it('should allow for a three element list of placeholders', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders([null, null, null]);
-      expect(tracker.getList()).toEqual([null, null, null]);
-      expect(tracker.getChanges()).toEqual([]);
-
-    });
-
-    it('should use preceding value for a placeholders if the value is defined', () => {
-
-      let tracker;
-
-      tracker = new ListChangesTrackerWithPlaceholders([1, null, null]);
-      expect(tracker.getList()).toEqual([1, 1, 1]);
-      expect(tracker.getChanges()).toEqual([]);
-
-      tracker = new ListChangesTrackerWithPlaceholders([null, 1, null]);
-      expect(tracker.getList()).toEqual([null, 1, 1]);
-      expect(tracker.getChanges()).toEqual([[1, null, 1]]);
-
-      tracker = new ListChangesTrackerWithPlaceholders([null, null, 1]);
-      expect(tracker.getList()).toEqual([null, null, 1]);
-      expect(tracker.getChanges()).toEqual([[2, null, 1]]);
-
-    });
-
-    it('should update first element in three element list of placeholders', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null, null]);
-      expect(tracker.getList()).toEqual([null, null, null]);
-      expect(tracker.getChanges()).toEqual([]);
+        const tracker = new ListChangesTrackerWithPlaceholders([null]);
+        expect(tracker.getList()).toEqual([null]);
+        expect(tracker.getChanges()).toEqual([]);
   
-      const updates = tracker.updateList(0, 1);
-      expect(tracker.getList()).toEqual([1, 1, 1]);
-      expect(updates).toEqual([]);
+      });
 
-    });
+      it('should allow two element list of placeholder', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders([null, null]);
+        expect(tracker.getList()).toEqual([null, null]);
+        expect(tracker.getChanges()).toEqual([]);
   
-    it('should update second element in three element list of placeholders', () => {
+      });
 
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null, null]);
-      expect(tracker.getList()).toEqual([null, null, null]);
-      expect(tracker.getChanges()).toEqual([]);
+      it('should allow for a three element list of placeholders', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders([null, null, null]);
+        expect(tracker.getList()).toEqual([null, null, null]);
+        expect(tracker.getChanges()).toEqual([]);
   
-      const updates = tracker.updateList(1, 1);
+      });
 
-      expect(tracker.getList()).toEqual([null, 1, 1]);
-      expect(updates).toEqual([
-        { type: "add", index: 1, change: [null, 1] }
-      ]);
+      it('should handle change between actual values with placeholder in between', () => {
 
-    });
+        const tracker = new ListChangesTrackerWithPlaceholders([1, null, 2]);
+        expect(tracker.getList()).toEqual([1, 1, 2]);
+        expect(tracker.getChanges()).toEqual([
+          [2, 1, 2]
+        ]);
   
-    it('should update third element in three element list of placeholders', () => {
-
-      const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null, null]);
-      expect(tracker.getList()).toEqual([null, null, null]);
-      expect(tracker.getChanges()).toEqual([]);
-  
-      const updates = tracker.updateList(2, 1);
-      expect(updates).toEqual([
-        { type: "add", index: 2, change: [null, 1] }
-      ]);
-      expect(tracker.getList()).toEqual([null, null, 1]);
+      });
 
     });
 
-    it('should handle change between actual values with placeholder in between', () => {
+    describe('->updateList() to value', () => {
 
-      const tracker = new ListChangesTrackerWithPlaceholders([1, null, 2]);
-      expect(tracker.getList()).toEqual([1, 1, 2]);
-      expect(tracker.getChanges()).toEqual([
-        [2, 1, 2]
-      ]);
+      it('should update a single element list with a placeholder', () => {
 
-    });
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null]);
+        expect(tracker.getList()).toEqual([null]);
+        expect(tracker.getChanges()).toEqual([]);
 
-    it('should retain explicit value appearing after placeholders are replaced by equal value', () => {
+        const updates = tracker.updateList(0, 1);
+        expect(updates).toEqual([]);
+        expect(tracker.getList()).toEqual([1]);
 
-      const tracker = new ListChangesTrackerWithPlaceholders([1, null, 2]);
-      expect(tracker.getList()).toEqual([1, 1, 2]);
-      expect(tracker.getChanges()).toEqual([
-        [2, 1, 2]
-      ]);
+      });
 
-      const updates = tracker.updateList(0, 2);
-      expect(tracker.getList()).toEqual([2, 2, 2]);
-      expect(tracker.getChanges()).toEqual([]);
-      expect(updates).toEqual([
-        { type: "remove", index: 2, change: [1, 2] }
-      ]);
+      it('should update first element in list of two placeholder', () => {
 
-      const updates2 = tracker.updateList(0, 1);
-      expect(tracker.getList()).toEqual([1, 1, 2]);
-      expect(updates2).toEqual([
-        { type: "add", index: 2, change: [1, 2] }
-      ]);
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null]);
+        expect(tracker.getList()).toEqual([null, null]);
+        expect(tracker.getChanges()).toEqual([]);
 
-    });
+        const updates = tracker.updateList(0, 1);
+        expect(updates).toEqual([]);
+        expect(tracker.getList()).toEqual([1, 1]);
 
-    it('should allow to update second element in a list with 4 placeholders', () => {
+      });
 
-      const tracker = new ListChangesTrackerWithPlaceholders<null | number>([null, null, null, null]);
-      const updates = tracker.updateList(1, 1);
-      expect(updates).toEqual([
-        { type: "add", index: 1, change: [null, 1] }
-      ]);
-      expect(tracker.getList()).toEqual([null, 1, 1, 1]);
-      expect(tracker.getChanges()).toEqual([
-        [1, null, 1]
-      ]);
+      it('should update second element in list of two placeholder', () => {
 
-    });
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null]);
+        expect(tracker.getList()).toEqual([null, null]);
+        expect(tracker.getChanges()).toEqual([]);
 
-    it('should provide changes that need to be made to replace placeholder surrounded by 2 values', () => {
+        const updates = tracker.updateList(1, 1);
+        expect(updates).toEqual([
+          { type: "add", index: 1, change: [null, 1] }
+        ]);
+        expect(tracker.getList()).toEqual([null, 1]);
 
-      const tracker = new ListChangesTrackerWithPlaceholders([1, null, 3]);
-      expect(tracker.getList()).toEqual([1, 1, 3]);
-      const updates = tracker.updateList(1, 2);
-      expect(tracker.getList()).toEqual([1, 2, 3]);
-      expect(updates).toEqual([
-        { type: "add", index: 1, change: [1, 2] },
-        { type: 'remove', index: 2, change: [1, 3] },
-        { type: "add", index: 2, change: [2, 3] }
-      ]);
-      expect(tracker.getChanges()).toEqual([
-        [1, 1, 2], [2, 2, 3]
-      ]);
+      });
 
-    });
+      it('should update value in list of value followed by a placeholder', () => {
 
-    it('should provide changes that need to be made to replace 2 placeholder surrounded by 2 values', () => {
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([1, null]);
+        expect(tracker.getList()).toEqual([1, 1]);
+        expect(tracker.getChanges()).toEqual([]);
 
-      const tracker = new ListChangesTrackerWithPlaceholders([1, null, null, 3]);
-      expect(tracker.getList()).toEqual([1, 1, 1, 3]);
-      const updates = tracker.updateList(1, 2);
-      expect(tracker.getListWithPlaceholders()).toEqual([1, 2, null, 3]);
-      expect(tracker.getList()).toEqual([1, 2, 2, 3]);
-      expect(updates).toEqual([
-        { type: "add", index: 1, change: [1, 2] },
-        { type: 'remove', index: 3, change: [1, 3] },
-        { type: "add", index: 3, change: [2, 3] }
-      ]);
-      expect(tracker.getChanges()).toEqual([
-        [1, 1, 2], [3, 2, 3]
-      ]);
+        const updates = tracker.updateList(0, 2);
+        expect(tracker.getList()).toEqual([2, 2]);
+        expect(updates).toEqual([]);
 
-    });
+      });
 
+      it('should update value in list of placeholder followed by a value', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, 1]);
+        expect(tracker.getList()).toEqual([null, 1]);
+        expect(tracker.getChanges()).toEqual([
+          [1, null, 1]
+        ]);
+
+        const updates = tracker.updateList(1, 2);
+        expect(tracker.getList()).toEqual([null, 2]);
+        expect(updates).toEqual([
+          { type: "remove", index: 1, change: [null, 1] },
+          { type: "add", index: 1, change: [null, 2] }
+        ]);
+        expect(tracker.getChanges()).toEqual([
+          [1, null, 2]
+        ]);
+
+      });
+
+      it('should use preceding value for a placeholders if the value is defined', () => {
+
+        let tracker;
+
+        tracker = new ListChangesTrackerWithPlaceholders([1, null, null]);
+        expect(tracker.getList()).toEqual([1, 1, 1]);
+        expect(tracker.getChanges()).toEqual([]);
+
+        tracker = new ListChangesTrackerWithPlaceholders([null, 1, null]);
+        expect(tracker.getList()).toEqual([null, 1, 1]);
+        expect(tracker.getChanges()).toEqual([[1, null, 1]]);
+
+        tracker = new ListChangesTrackerWithPlaceholders([null, null, 1]);
+        expect(tracker.getList()).toEqual([null, null, 1]);
+        expect(tracker.getChanges()).toEqual([[2, null, 1]]);
+
+      });
+
+      it('should update first element in three element list of placeholders', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null, null]);
+        expect(tracker.getList()).toEqual([null, null, null]);
+        expect(tracker.getChanges()).toEqual([]);
     
+        const updates = tracker.updateList(0, 1);
+        expect(tracker.getList()).toEqual([1, 1, 1]);
+        expect(updates).toEqual([]);
 
-    // it('should provide changes that need to be made to replace placeholders with value', () => {
+      });
+    
+      it('should update second element in three element list of placeholders', () => {
 
-    //   const tracker = new ListChangesTrackerWithPlaceholders([1, null, 2, null]);
-    //   const updates = tracker.updateList(2, null);
-    //   expect(tracker.getList()).toEqual([1, 1, 1, 1]);
-    //   expect(updates).toEqual([
-    //     { type: "add", index: 1, change: [1, 2] },
-    //     { type: "add", index: 2, change: [2, 3] }
-    //   ]);
-    //   expect(tracker.getChanges()).toEqual([[]]);
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null, null]);
+        expect(tracker.getList()).toEqual([null, null, null]);
+        expect(tracker.getChanges()).toEqual([]);
+    
+        const updates = tracker.updateList(1, 1);
+
+        expect(tracker.getList()).toEqual([null, 1, 1]);
+        expect(updates).toEqual([
+          { type: "add", index: 1, change: [null, 1] }
+        ]);
+
+      });
+    
+      it('should update third element in three element list of placeholders', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([null, null, null]);
+        expect(tracker.getList()).toEqual([null, null, null]);
+        expect(tracker.getChanges()).toEqual([]);
+    
+        const updates = tracker.updateList(2, 1);
+        expect(updates).toEqual([
+          { type: "add", index: 2, change: [null, 1] }
+        ]);
+        expect(tracker.getList()).toEqual([null, null, 1]);
+
+      });
+
+      it('should retain explicit value appearing after placeholders are replaced by equal value', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders([1, null, 2]);
+        expect(tracker.getList()).toEqual([1, 1, 2]);
+        expect(tracker.getChanges()).toEqual([
+          [2, 1, 2]
+        ]);
+
+        const updates = tracker.updateList(0, 2);
+        expect(tracker.getList()).toEqual([2, 2, 2]);
+        expect(tracker.getChanges()).toEqual([]);
+        expect(updates).toEqual([
+          { type: "remove", index: 2, change: [1, 2] }
+        ]);
+
+        const updates2 = tracker.updateList(0, 1);
+        expect(tracker.getList()).toEqual([1, 1, 2]);
+        expect(updates2).toEqual([
+          { type: "add", index: 2, change: [1, 2] }
+        ]);
+
+      });
+
+      it('should update second element in a list with 4 placeholders', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<null | number>([null, null, null, null]);
+        const updates = tracker.updateList(1, 1);
+        expect(updates).toEqual([
+          { type: "add", index: 1, change: [null, 1] }
+        ]);
+        expect(tracker.getList()).toEqual([null, 1, 1, 1]);
+        expect(tracker.getChanges()).toEqual([
+          [1, null, 1]
+        ]);
+
+      });
+
+      it('should update first element in four element list of placeholders starting with value', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([0, null, null, null]);
+        expect(tracker.getList()).toEqual([0, 0, 0, 0]);
+        expect(tracker.getChanges()).toEqual([]);
+    
+        const updates = tracker.updateList(0, 1);
+        expect(tracker.getList()).toEqual([1, 1, 1, 1]);
+        expect(updates).toEqual([]);
+
+      });
+    
+      it('should update second element in four element list of placeholders starting with value', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([0, null, null, null]);
+        expect(tracker.getList()).toEqual([0, 0, 0, 0]);
+        expect(tracker.getChanges()).toEqual([]);
+    
+        const updates = tracker.updateList(1, 1);
+
+        expect(tracker.getList()).toEqual([0, 1, 1, 1]);
+        expect(updates).toEqual([
+          { type: "add", index: 1, change: [0, 1] }
+        ]);
+
+      });
+    
+      it('should update third element in four element list of placeholders starting with value', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([0, null, null, null]);
+        expect(tracker.getList()).toEqual([0, 0, 0, 0]);
+        expect(tracker.getChanges()).toEqual([]);
+    
+        const updates = tracker.updateList(2, 1);
+        expect(tracker.getList()).toEqual([0, 0, 1, 1]);
+        expect(updates).toEqual([
+          { type: "add", index: 2, change: [0, 1] }
+        ]);
+
+      });
+
+      it('should update fourth element in four element list of placeholders starting with value', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders<number | null>([0, null, null, null]);
+        expect(tracker.getList()).toEqual([0, 0, 0, 0]);
+        expect(tracker.getChanges()).toEqual([]);
+    
+        const updates = tracker.updateList(3, 1);
+        expect(tracker.getList()).toEqual([0, 0, 0, 1]);
+        expect(updates).toEqual([
+          { type: "add", index: 3, change: [0, 1] }
+        ]);
+
+      });
+
+      it('should provide changes that need to be made to replace placeholder surrounded by 2 values', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders([1, null, 3]);
+        expect(tracker.getList()).toEqual([1, 1, 3]);
+
+        const updates = tracker.updateList(1, 2);
+        expect(tracker.getList()).toEqual([1, 2, 3]);
+        expect(updates).toEqual([
+          { type: "add", index: 1, change: [1, 2] },
+          { type: 'remove', index: 2, change: [1, 3] },
+          { type: "add", index: 2, change: [2, 3] }
+        ]);
+        expect(tracker.getChanges()).toEqual([
+          [1, 1, 2], [2, 2, 3]
+        ]);
+
+      });
+
+      it('should provide changes that need to be made to replace 1st placeholder surrounded by 2 values', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders([1, null, null, 3]);
+        expect(tracker.getList()).toEqual([1, 1, 1, 3]);
+
+        const updates = tracker.updateList(1, 2);
+        expect(tracker.getListWithPlaceholders()).toEqual([1, 2, null, 3]);
+        expect(tracker.getList()).toEqual([1, 2, 2, 3]);
+        expect(updates).toEqual([
+          { type: "add", index: 1, change: [1, 2] },
+          { type: 'remove', index: 3, change: [1, 3] },
+          { type: "add", index: 3, change: [2, 3] }
+        ]);
+        expect(tracker.getChanges()).toEqual([
+          [1, 1, 2], [3, 2, 3]
+        ]);
+
+      });
+
+      it('should provide changes that need to be made to replace 2nd placeholder surrounded by 2 values', () => {
+
+        const tracker = new ListChangesTrackerWithPlaceholders([1, null, null, 3]);
+        expect(tracker.getList()).toEqual([1, 1, 1, 3]);
+
+        const updates = tracker.updateList(2, 2);
+        expect(tracker.getListWithPlaceholders()).toEqual([1, null, 2, 3]);
+        expect(tracker.getList()).toEqual([1, 1, 2, 3]);
+        expect(updates).toEqual([
+          { type: "add", index: 2, change: [1, 2] },
+          { type: 'remove', index: 3, change: [1, 3] },
+          { type: "add", index: 3, change: [2, 3] }
+        ]);
+        expect(tracker.getChanges()).toEqual([
+          [2, 1, 2], [3, 2, 3]
+        ]);
+
+      });
+
+    });
+
+    // describe('->updateList() to placeholder', () => {
+
+    //   it('should provide changes that need to be made to replace placeholders with value', () => {
+
+    //     const tracker = new ListChangesTrackerWithPlaceholders([1, null, 2, null]);
+    //     expect(tracker.getList()).toEqual([1, 1, 2, 2])
+    //     expect(tracker.getChanges()).toEqual([[2, 1, 2]]);
+  
+    //     const updates = tracker.updateList(2, null);
+    //     expect(tracker.getList()).toEqual([1, 1, 1, 1]);
+    //     expect(updates).toEqual([
+    //       { type: "add", index: 1, change: [1, 2] },
+    //       { type: "add", index: 2, change: [2, 3] }
+    //     ]);
+    //     expect(tracker.getChanges()).toEqual([[]]);
+  
+    //   });
 
     // });
 
