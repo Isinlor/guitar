@@ -146,66 +146,97 @@ export class HandMovementPenalty implements SoftConstraint<Fingering>, TrackStat
   }
 }
 
-export class FingerStringJumpingPenalty implements SoftConstraint<Fingering>, TrackState<Fingering> {
-  private trackFingering: TrackFingering;
-  private penalty: number = 0;
-  private fingersPositions: Record<number, { string: number }> = {};
+export class FingerStringJumpingPenalty implements SoftConstraint<Fingering> {
+  
+  private stringChangeTrackerPerFinger: Record<number, ListChangesTracker<number | null>> = {};
 
+  private penaltyPerFinger: Record<number, number> = {
+    1: 0, 2: 0, 3: 0, 4: 0,
+  };
+  
   constructor(trackFingering: TrackFingering) {
-    this.trackFingering = trackFingering;
-    this.calculateInitialPenalty();
+    this.initializeFingerStringChanges(trackFingering);
   }
 
-  private calculateInitialPenalty(): void {
-    for (let i = 0; i < this.trackFingering.length; i++) {
-      this.addPenaltyForNote(i);
+  private initializeFingerStringChanges(trackFingering: TrackFingering): void {
+    const fingerPositionsAcrossTrack: (number | null)[][] = [[], [], [], [],];
+    const fingersPositions: Record<number, number | null> = {
+      1: null, 2: null, 3: null, 4: null,
+    };
+    trackFingering.forEach(({ fingering }) => {
+      const { finger, string } = fingering;
+      const currentFingerPositions = { ...fingersPositions };
+      currentFingerPositions[finger] = string;
+      Object.values(currentFingerPositions).forEach((string, finger) => {
+        fingerPositionsAcrossTrack[finger].push(string);
+      });
+    });
+    fingerPositionsAcrossTrack.forEach((strings, finger) => {
+      finger = finger + 1; // 0 index to 1 index
+      this.stringChangeTrackerPerFinger[finger] = new ListChangesTrackerWithPlaceholders(strings);
+    });
+    Object.values(this.stringChangeTrackerPerFinger).forEach((tracker, finger) => {
+      finger = finger + 1; // 0 index to 1 index
+      const changes = tracker.getChanges();
+      this.penaltyPerFinger[finger] = changes.reduce((sum, [_, oldString, newString]) => {
+        return sum + this.getDistance(oldString, newString);
+      }, 0);
+    });
+  }
+
+  change(index: number, oldState: Fingering, newState: Fingering): void {
+    
+    if (oldState.finger === newState.finger && oldState.string === newState.string) {
+      return; // No change, exit early
     }
-  }
 
-  private addPenaltyForNote(index: number): void {
-    const currentFingering = this.trackFingering[index].fingering;
-    const previousFingerPosition = this.fingersPositions[currentFingering.finger];
+    const newFingerTracker = this.stringChangeTrackerPerFinger[newState.finger];
 
-    if (!previousFingerPosition) {
-      this.fingersPositions[currentFingering.finger] = { string: currentFingering.string };
+    if (oldState.finger !== newState.finger) {
+      
+      const oldFingerTracker = this.stringChangeTrackerPerFinger[oldState.finger];
+
+      this.updatePenalty(oldState.finger, oldFingerTracker.updateList(index, null));
+      this.updatePenalty(newState.finger, newFingerTracker.updateList(index, newState.string));
+      
       return;
+
     }
 
-    if (previousFingerPosition.string !== currentFingering.string) {
-      this.penalty += Math.abs(previousFingerPosition.string - currentFingering.string);
-    }
-
-    this.fingersPositions[currentFingering.finger] = { string: currentFingering.string };
+    this.updatePenalty(newState.finger, newFingerTracker.updateList(index, newState.string));
+    
   }
 
-  private removePenaltyForNote(index: number): void {
-    const currentFingering = this.trackFingering[index].fingering;
-    const previousFingerPosition = this.fingersPositions[currentFingering.finger];
+  private updatePenalty(finger: number, updates: ListChangesUpdate<number | null>[]) {
 
-    if (previousFingerPosition && previousFingerPosition.string !== currentFingering.string) {
-      this.penalty -= Math.abs(previousFingerPosition.string - currentFingering.string);
-    }
-  }
+    const penaltyChange = updates.reduce((sum, update) => {
+      const [oldString, newString] = update.change;
+      const distance = this.getDistance(oldString, newString);
+      if (update.type === "add") return sum + distance;
+      if (update.type === "remove") return sum - distance;
+      throw new Error(`Unexpected update type: ${update.type} for update: ${update}`);
+    }, 0);
 
-  change(index: number, oldFingering: Fingering, newFingering: Fingering): void {
-    this.removePenaltyForNote(index);
-    this.trackFingering[index].fingering = newFingering;
-    this.addPenaltyForNote(index);
+    this.penaltyPerFinger[finger] += penaltyChange;
 
-    // Reset finger positions for the changed finger
-    delete this.fingersPositions[oldFingering.finger];
-    delete this.fingersPositions[newFingering.finger];
-
-    // Recalculate penalties for subsequent notes
-    for (let i = index + 1; i < this.trackFingering.length; i++) {
-      this.removePenaltyForNote(i);
-      this.addPenaltyForNote(i);
-    }
   }
 
   getPenalty(): number {
-    return this.penalty;
+    return Object.values(this.penaltyPerFinger).reduce((sum, penalty) => sum + penalty, 0);
   }
+
+  getDistance(oldString: number | null, newString: number | null): number {
+    if (oldString === newString) return 0; // nothing happens
+    if (oldString === null || newString === null) return 0; // 1 for lifting finger or placing finger
+    return Math.abs(newString - oldString); // + 2; // the distance + lifting and placing
+  }
+
+  toString(): string {
+    return Object.entries(this.penaltyPerFinger).map(([finger, penalty]) => {
+      return `Finger ${finger}: ${penalty}: ${this.stringChangeTrackerPerFinger[Number(finger)].getList()}`;
+    }).join("\n");
+  }
+
 }
 
 export class SimpleSoftConstraint implements SoftConstraint<Fingering> {
