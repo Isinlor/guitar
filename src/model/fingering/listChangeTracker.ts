@@ -72,7 +72,7 @@ export class ListChangesTracker<T> {
     return [];
   }
 
-  private updateChange(listIndex: number, left: T, right: T): ListChangesUpdate<T>[] {
+  protected updateChange(listIndex: number, left: T, right: T): ListChangesUpdate<T>[] {
     const updates: ListChangesUpdate<T>[] = [];
     const changeNode = this.changes.find([listIndex, undefined as any, undefined as any]);
 
@@ -105,6 +105,11 @@ export class ListChangesTracker<T> {
     return lastChangeBeforeIndex.getValue()[2];
   }
 
+  getChangeAfter(listIndex: number): [number, T, T] | undefined {
+    const change = this.changes.upperBound([listIndex, undefined as any, undefined as any], false);
+    return change ? change.getValue() : undefined;
+  }
+
   getChanges(): [number, T, T][] {
     const result: [number, T, T][] = [];
     this.changes.traverseInOrder((node) => {
@@ -116,4 +121,52 @@ export class ListChangesTracker<T> {
   getList(): (T | undefined)[] {
     return Array.from({ length: this.length }, (_, i) => this.getValue(i));
   }
+}
+
+export class ListChangesTrackerWithPlaceholders<T> extends ListChangesTracker<T | null> {
+
+  private primaryTracker: ListChangesTracker<T | null>;
+
+  constructor(initialList: (T | null)[]) {
+    let oldValue = initialList[0] ?? null;
+    const secondaryList = initialList.map((v) => {
+      if (v !== null && v !== undefined) oldValue = v;
+      return v ?? oldValue;
+    });
+    super(secondaryList);
+    this.primaryTracker = new ListChangesTracker(initialList);
+  }
+
+  updateList(listIndex: number, to: T): ListChangesUpdate<T | null>[] {
+
+    const updates: ListChangesUpdate<T | null>[] = [];
+
+    this.primaryTracker.updateList(listIndex, to);
+
+    const prev = listIndex > 0 ? this.getValue(listIndex - 1) : undefined;
+    const nextChange = this.primaryTracker.getChangeAfter(listIndex);
+    const endOfPlaceholdersChange = nextChange && nextChange[2] === null ?
+      this.primaryTracker.getChangeAfter(nextChange[0]) : undefined;
+
+    if (listIndex === 0) this.initialValue = to;
+  
+    if (prev !== undefined) {
+      updates.push(...this.updateChange(listIndex, prev, to));
+    }
+
+    if (nextChange) {
+      updates.push(...this.updateChange(nextChange[0], to, nextChange[2] !== null ? nextChange[2] : to));
+    }
+
+    if (endOfPlaceholdersChange) {
+      updates.push(...this.updateChange(endOfPlaceholdersChange[0], to, endOfPlaceholdersChange[2]));
+    }
+
+    return updates;
+  }
+
+  getListWithPlaceholders(): (T | null | undefined)[] {
+    return this.primaryTracker.getList();
+  }
+
 }
