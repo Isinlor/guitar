@@ -1,3 +1,4 @@
+import { ListChangesTracker, ListChangesTrackerWithPlaceholders, ListChangesUpdate } from "@/model/fingering/listChangeTracker";
 import { SoftConstraint, TrackState } from "@/model/fingering/types";
 import { Fingering, TrackFingering } from "@/model/types";
 
@@ -53,97 +54,58 @@ export class FingersCrossingPenalty implements SoftConstraint<Fingering>, TrackS
 }
 
 export class HandMovementPenalty implements SoftConstraint<Fingering>, TrackState<Fingering> {
-  private trackFingering: TrackFingering;
+
+  private changeTracker: ListChangesTracker<number>;
+
   private penalty: number = 0;
   private movement: number = 0;
 
   constructor(trackFingering: TrackFingering) {
-    this.trackFingering = trackFingering;
+    this.changeTracker = new ListChangesTracker(
+      trackFingering.map(({ fingering }) => this.getHandPosition(fingering))
+    );
     this.calculateInitialPenalty();
   }
 
   private calculateInitialPenalty(): void {
-    for (let i = 0; i < this.trackFingering.length - 1; i++) {
-      this.addPenaltyBetweenNotes(i, i + 1);
-    }
+    this.movement = this.changeTracker.getChanges().length;
+    this.changeTracker.getChanges().forEach(([_, previous, next]) => {
+      this.penalty += this.getChangePenalty(previous, next);
+    });
   }
 
-  private addPenaltyBetweenNotes(index1: number, index2: number): void {
-    let currentFingering = this.trackFingering[index1].fingering;
-    let nextFingering = this.trackFingering[index2].fingering;
-
-    if (currentFingering.fret === 0 || nextFingering.fret === 0) {
-      let j = 1;
-      while (currentFingering.fret === 0 && index1 - j >= 0) {
-        currentFingering = this.trackFingering[index1 - j].fingering;
-        j++;
-      }
-      let k = 2;
-      while (nextFingering.fret === 0 && index2 + k < this.trackFingering.length) {
-        nextFingering = this.trackFingering[index2 + k].fingering;
-        k++;
-      }
-      if (currentFingering.fret === 0 || nextFingering.fret === 0) return;
-    }
-
-    const fretChange = nextFingering.fret - currentFingering.fret;
-    const fingerChange = nextFingering.finger - currentFingering.finger;
-    if (fretChange === fingerChange) return;
-
-    this.penalty += 5 + Math.abs(fretChange - fingerChange) ** 2;
-    this.movement += 1;
+  getHandPosition(fingering: Fingering): number {
+    return fingering.fret - fingering.finger + 1;
   }
 
-  private removePenaltyBetweenNotes(index1: number, index2: number): void {
-    let currentFingering = this.trackFingering[index1].fingering;
-    let nextFingering = this.trackFingering[index2].fingering;
-
-    if (currentFingering.fret === 0 || nextFingering.fret === 0) {
-      let j = 1;
-      while (currentFingering.fret === 0 && index1 - j >= 0) {
-        currentFingering = this.trackFingering[index1 - j].fingering;
-        j++;
-      }
-      let k = 2;
-      while (nextFingering.fret === 0 && index2 + k < this.trackFingering.length) {
-        nextFingering = this.trackFingering[index2 + k].fingering;
-        k++;
-      }
-      if (currentFingering.fret === 0 || nextFingering.fret === 0) return;
-    }
-
-    const fretChange = nextFingering.fret - currentFingering.fret;
-    const fingerChange = nextFingering.finger - currentFingering.finger;
-    if (fretChange === fingerChange) return;
-
-    this.penalty -= 5 + Math.abs(fretChange - fingerChange) ** 2;
-    this.movement -= 1;
+  getChangePenalty(previous: number, next: number): number {
+    return 5 + Math.abs(next - previous) ** 2;
   }
 
   change(index: number, oldFingering: Fingering, newFingering: Fingering): void {
-    // Remove old penalties
-    if (index > 0) {
-      this.removePenaltyBetweenNotes(index - 1, index);
-    }
-    if (index < this.trackFingering.length - 1) {
-      this.removePenaltyBetweenNotes(index, index + 1);
-    }
-
-    // Update fingering
-    this.trackFingering[index].fingering = newFingering;
-
-    // Add new penalties
-    if (index > 0) {
-      this.addPenaltyBetweenNotes(index - 1, index);
-    }
-    if (index < this.trackFingering.length - 1) {
-      this.addPenaltyBetweenNotes(index, index + 1);
-    }
+    const newPosition = this.getHandPosition(newFingering);
+    const updates = this.changeTracker.updateList(index, newPosition);
+    updates.forEach(({ type, change }) => {
+      const [previous, next] = change;
+      if (type === "add") {
+        this.movement += 1;
+        this.penalty += this.getChangePenalty(previous, next);
+      }
+      if (type === "remove") {
+        this.movement -= 1;
+        this.penalty -= this.getChangePenalty(previous, next);
+      }
+    })
   }
 
   getPenalty(): number {
     return this.penalty + this.movement ** 4;
   }
+
+  toString(): string {
+    return this.changeTracker.getList().join(", ") + ';' + this.changeTracker.getChanges().map(([_, previous, next]) => `${previous} -> ${next}`).join(", ");
+  }
+
 }
 
 export class FingerStringJumpingPenalty implements SoftConstraint<Fingering> {

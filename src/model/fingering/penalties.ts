@@ -117,21 +117,16 @@ export function fingerVelocityPenalty(trackFingering: TrackFingering) {
 export function fingerStringJumpingPenalty(trackFingering: TrackFingering) {
   let penalty = 0;
   let fingersPositions: Record<number, { string: number }> = {};
-  for (let i = 0; i < trackFingering.length - 1; i++) {
-    
-    const currentFingering = trackFingering[i].fingering;
-    
-    const previousFingerPosition = fingersPositions[currentFingering.finger] ?? undefined;
-    if (!previousFingerPosition) {
-      fingersPositions[currentFingering.finger] = { string: currentFingering.string };
-      continue;
+  trackFingering.forEach((noteEvent) => {
+    const { finger, string } = noteEvent.fingering;
+    const previousFingerPosition = fingersPositions[finger];
+    if (previousFingerPosition) {
+      penalty += Math.abs(string - previousFingerPosition.string);
     }
-
-    if (previousFingerPosition.string !== currentFingering.string) {
-      penalty += Math.abs(previousFingerPosition.string - currentFingering.string);
+    if (!previousFingerPosition || previousFingerPosition.string !== string) {
+      fingersPositions[finger] = { string };
     }
-
-  }
+  });
   return penalty;
 }
 

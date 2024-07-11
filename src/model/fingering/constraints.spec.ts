@@ -1,6 +1,6 @@
-import { HandMovementPenalty } from '@/model/fingering/constraints';
-import { handMovementPenalty } from '@/model/fingering/penalties';
-import { Fingering, TrackFingering } from '@/model/types';
+import { FingerStringJumpingPenalty, HandMovementPenalty } from '@/model/fingering/constraints';
+import { fingerStringJumpingPenalty, handMovementPenalty } from '@/model/fingering/penalties';
+import { Fingering, NoteEventWithFingering, TrackFingering } from '@/model/types';
 import { describe, expect, it } from 'vitest';
 
 describe('HandMovementPenalty', () => {
@@ -11,14 +11,18 @@ describe('HandMovementPenalty', () => {
     finger
   });
 
-  // Helper function to create a track fingering
-  const createTrackFingering = (fingerings: [number, number, number][]): TrackFingering => 
-    fingerings.map(([string, fret, finger], index) => ({
+  const createNoteEventWithFingering = (
+    index: number, [string, fret, finger]: [number, number, number]
+  ): NoteEventWithFingering => ({
       note: 0, // We don't need actual MIDI notes for this test
       startTimeMs: index * 1000,
       durationMs: 1000,
       fingering: createFingering(string, fret, finger)
-    }));
+    });
+
+  // Helper function to create a track fingering
+  const createTrackFingering = (fingerings: [number, number, number][]): TrackFingering => 
+    fingerings.map((fingering, index) => createNoteEventWithFingering(index, fingering));
 
   it('should return 0 for a single note', () => {
     const trackFingering = createTrackFingering([[1, 1, 1]]);
@@ -194,22 +198,49 @@ describe('HandMovementPenalty', () => {
 
   });
 
-  it("fret 1 finger 1 -> fret 9 (+8) finger 1 = fret 9 finger 1 -> fret 1 finger 1", () => {
-    const trackFingering1 = createTrackFingering([[1, 1, 1], [1, 9, 1]]);
-    const trackFingering2 = createTrackFingering([[1, 9, 1], [1, 1, 1]]);
+  it("Track changes: fret 1 finger 1 -> fret 12 (+11) finger 4 (+3) = fret 1 finger 1 -> fret 9 (+8) finger 1 (0)", () => {
+    const trackFingering = createTrackFingering([[1, 1, 1], [1, 12, 4]]);
 
-    const newPenalty1 = new HandMovementPenalty(trackFingering1).getPenalty();
-    const newPenalty2 = new HandMovementPenalty(trackFingering2).getPenalty();
-    const oldPenalty1 = handMovementPenalty(trackFingering1);
-    const oldPenalty2 = handMovementPenalty(trackFingering2);
+    const penalty = new HandMovementPenalty(trackFingering);
+    const oldPenalty = handMovementPenalty(trackFingering);
 
-    expect(newPenalty1).toBe(oldPenalty1);
-    expect(newPenalty2).toBe(oldPenalty2);
+    expect(penalty.getPenalty()).toBe(oldPenalty);
 
-    expect(newPenalty1).toBe(70);
-    expect(newPenalty2).toBe(70);
-    expect(oldPenalty1).toBe(70);
-    expect(oldPenalty2).toBe(70);
+    expect(penalty.getPenalty()).toBe(70);
+    expect(oldPenalty).toBe(70);
+
+    const oldNoteEvent = trackFingering[1];
+    trackFingering[1] = createNoteEventWithFingering(1, [1, 9, 1]);
+    penalty.change(1, oldNoteEvent.fingering, trackFingering[1].fingering);
+
+    expect(penalty.getPenalty()).toBe(handMovementPenalty(trackFingering));
+    expect(penalty.getPenalty()).toBe(70);
+  });
+
+  it("Track changes: fret 1 finger 1 -> fret 9 (+8) finger 1 = fret 9 finger 1 -> fret 1 finger 1", () => {
+    const trackFingering = createTrackFingering([[1, 1, 1], [1, 9, 1]]);
+
+    const penalty = new HandMovementPenalty(trackFingering);
+    const oldPenalty = handMovementPenalty(trackFingering);
+
+    expect(penalty.getPenalty()).toBe(oldPenalty);
+
+    expect(penalty.getPenalty()).toBe(70);
+    expect(oldPenalty).toBe(70);
+
+    let oldNoteEvent = trackFingering[0];
+    trackFingering[0] = createNoteEventWithFingering(0, [1, 9, 1]);
+    penalty.change(0, oldNoteEvent.fingering, trackFingering[0].fingering);
+
+    expect(penalty.getPenalty()).toBe(handMovementPenalty(trackFingering));
+    expect(penalty.getPenalty()).toBe(0)
+
+    oldNoteEvent = trackFingering[1];
+    trackFingering[1] = createNoteEventWithFingering(1, [1, 1, 1]);
+    penalty.change(1, oldNoteEvent.fingering, trackFingering[1].fingering);
+
+    expect(penalty.getPenalty()).toBe(handMovementPenalty(trackFingering));
+    expect(penalty.getPenalty()).toBe(70)
   });
 
   testTransition(
