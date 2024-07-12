@@ -1,4 +1,4 @@
-import { BinarySearchTree } from '@datastructures-js/binary-search-tree';
+import { AvlTree } from '@datastructures-js/binary-search-tree';
 
 export type ListChangesUpdate<T> = {
   type: "add" | "remove";
@@ -9,10 +9,10 @@ export type ListChangesUpdate<T> = {
 export class ListChangesTracker<T> {
   protected length: number;
   protected initialValue: T | undefined;
-  protected changes: BinarySearchTree<[number, T, T]>;
+  protected changes: AvlTree<[number, T, T]>;
 
   constructor(initialList: T[]) {
-    this.changes = new BinarySearchTree((a, b) => a[0] - b[0]);
+    this.changes = new AvlTree((a, b) => a[0] - b[0]);
     this.length = initialList.length;
     this.initialValue = initialList[0];
     this.initializeChanges(initialList);
