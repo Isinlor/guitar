@@ -49,29 +49,6 @@ export class ListChangesTracker<T> {
     return updates;
   }
 
-  /**
-   * Reset element at the given index.
-   * 
-   * Resetting means that the element at the given index will take value of the previous element.
-   * If the element is the first element, it will take the value of the next element.
-   * If there are no other elements the set value will be undefined.
-   */
-  reset(listIndex: number): ListChangesUpdate<T>[] {
-    if (listIndex < 0 || listIndex > this.length - 1) throw new Error(
-      `Index ${listIndex} out of bounds. List length is ${this.length}.`
-    );
-
-    const prev = listIndex > 0 ? this.getValue(listIndex - 1) : undefined;
-    if (prev !== undefined) return this.updateList(listIndex, prev);
-
-    const next = listIndex < this.length - 1 ? this.getValue(listIndex + 1) : undefined;
-    if (next !== undefined) return this.updateList(listIndex, next);
-
-    this.initialValue = undefined;
-
-    return [];
-  }
-
   protected updateChange(listIndex: number, left: T, right: T): ListChangesUpdate<T>[] {
     const updates: ListChangesUpdate<T>[] = [];
     const changeNode = this.changes.find([listIndex, undefined as any, undefined as any]);
