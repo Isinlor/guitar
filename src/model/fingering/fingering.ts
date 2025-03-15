@@ -1,6 +1,6 @@
-import { exhaustiveSearch, iterativeLocalSearch, localSearch, slidingWindowExhaustiveSearch } from '@/model/fingering/search';
+import { exhaustiveSearch, iterativeLocalSearch, localSearchTrackFingering, slidingWindowExhaustiveSearch } from '@/model/fingering/search';
 import { Instrument } from '@/model/instrument';
-import { Fingering, MidiNote, MidiNoteToFingeringAlternatives, NoteEvent, NoteEventWithFingeringAlternatives } from "@/model/types";
+import { Fingering, MidiNote, MidiNoteToFingeringAlternatives, NoteEvent, NoteEventWithFingeringAlternatives, NoteEventWithHandPosition, NoteEventWithHandPositionAlternatives } from "@/model/types";
 
 export function fingeringToString(fingering: Fingering) {
   return `${fingering.string}:${fingering.fret}:${fingering.finger}`;
@@ -42,6 +42,30 @@ export function getNoteEventsWithFingeringAlternatives(
   });
 }
 
+export function getNoteEventWithHandPositionAlternatives(
+  noteEventWithFingeringAlternatives: NoteEventWithFingeringAlternatives[]
+): NoteEventWithHandPositionAlternatives[] {
+  return noteEventWithFingeringAlternatives.map(noteEvent => {
+    const fingeringAlternatives = noteEvent.fingeringAlternatives;
+    const handPositionAlternatives = [...new Set(fingeringAlternatives.map(fingering => {
+      return Math.max(0, fingering.fret - fingering.finger + 1);
+    }))];
+    return { ...noteEvent, handPositionAlternatives };
+  });
+}
+
+export function eliminateFingeringAlternativesBasedOnHandPosition(
+  noteEvents: (NoteEventWithFingeringAlternatives & NoteEventWithHandPosition)[]
+): NoteEventWithFingeringAlternatives[] {
+  return noteEvents.map(noteEvent => {
+    const handPosition = noteEvent.handPosition;
+    const fingeringAlternatives = noteEvent.fingeringAlternatives.filter(fingering => {
+      return Math.max(0, fingering.fret - fingering.finger + 1) === handPosition;
+    });
+    return { ...noteEvent, fingeringAlternatives };
+  });
+}
+
 export function makeRandomTrackFingering(noteEvents: NoteEventWithFingeringAlternatives[]) {
   return noteEvents.map(note => {
     const fingeringAlternatives = note.fingeringAlternatives;
@@ -54,10 +78,21 @@ export function makeRandomTrackFingering(noteEvents: NoteEventWithFingeringAlter
 
 export function createTrackFingering(instrument: Instrument, noteEvents: NoteEvent[]) {
 
-  const transposition = instrument.findMostAccurateTranspositionWithSmallestFretRange(getUniqueNotes(noteEvents));
+  let lastTime = performance.now();
+  const start = lastTime;
 
+  const logInterval = (label: string) => {
+    const now = performance.now();
+    console.log(`${label}: ${now - lastTime}ms (Total: ${now - start}ms)`);
+    lastTime = now;
+  };
+
+  logInterval('start');
+
+  const transposition = instrument.findMostAccurateTranspositionWithSmallestFretRange(getUniqueNotes(noteEvents));
   noteEvents = transpose(noteEvents, transposition);
-  
+  logInterval('transposition');
+
   const notes = getUniqueNotes(noteEvents);
 
   const fingeringAlternatives = instrument.getCompactFingeringAlternativesForNotes(notes);
@@ -71,11 +106,24 @@ export function createTrackFingering(instrument: Instrument, noteEvents: NoteEve
   let bestTrackFingering = randomTrackFingering;
 
   let localSearchSteps = Math.round(20000 * (bestTrackFingering.length / 67) * (totalNumberOfPossibleFingerings / 26));
+  
+  logInterval('until search');
 
   bestTrackFingering = iterativeLocalSearch(randomTrackFingering, 10, Math.round(localSearchSteps / 10), 5);
-  bestTrackFingering = localSearch(bestTrackFingering, localSearchSteps, 3);
+
+  logInterval('iterativeLocalSearch');
+
+  bestTrackFingering = localSearchTrackFingering(bestTrackFingering, localSearchSteps, 3);
+
+  logInterval('localSearchTrackFingering');
+
   bestTrackFingering = slidingWindowExhaustiveSearch(bestTrackFingering);
+
+  logInterval('slidingWindowExhaustiveSearch');
+
   bestTrackFingering = exhaustiveSearch(bestTrackFingering, 1);
+
+  logInterval('exhaustiveSearch');
 
   return bestTrackFingering;
     

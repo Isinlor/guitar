@@ -117,10 +117,10 @@ export class FingerStringJumpingPenalty implements SoftConstraint<Fingering> {
   };
   
   constructor(trackFingering: TrackFingering) {
-    this.initializeFingerStringChanges(trackFingering);
+    this.initializeFingerStringChanges2(trackFingering);
   }
 
-  private initializeFingerStringChanges(trackFingering: TrackFingering): void {
+  private initializeFingerStringChanges2(trackFingering: TrackFingering): void {
     const fingerPositionsAcrossTrack: (number | null)[][] = [[], [], [], [],];
     const fingersPositions: Record<number, number | null> = {
       1: null, 2: null, 3: null, 4: null,
@@ -128,7 +128,7 @@ export class FingerStringJumpingPenalty implements SoftConstraint<Fingering> {
     trackFingering.forEach(({ fingering }) => {
       const { finger, string } = fingering;
       const currentFingerPositions = { ...fingersPositions };
-      currentFingerPositions[finger] = string;
+      if(finger !== 0) currentFingerPositions[finger] = string;
       Object.values(currentFingerPositions).forEach((string, finger) => {
         fingerPositionsAcrossTrack[finger].push(string);
       });
@@ -152,20 +152,19 @@ export class FingerStringJumpingPenalty implements SoftConstraint<Fingering> {
       return; // No change, exit early
     }
 
-    const newFingerTracker = this.stringChangeTrackerPerFinger[newState.finger];
-
-    if (oldState.finger !== newState.finger) {
+    if (oldState.finger !== 0 && oldState.finger !== newState.finger) {
       
       const oldFingerTracker = this.stringChangeTrackerPerFinger[oldState.finger];
 
       this.updatePenalty(oldState.finger, oldFingerTracker.updateList(index, null));
-      this.updatePenalty(newState.finger, newFingerTracker.updateList(index, newState.string));
-      
-      return;
 
     }
 
-    this.updatePenalty(newState.finger, newFingerTracker.updateList(index, newState.string));
+    const newFingerTracker = this.stringChangeTrackerPerFinger[newState.finger];
+
+    if (newState.finger !== 0) {
+      this.updatePenalty(newState.finger, newFingerTracker.updateList(index, newState.string));
+    }    
     
   }
 

@@ -1,0 +1,623 @@
+[
+  {
+    "note": 60,
+    "startTimeMs": 0,
+    "durationMs": 250,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 63,
+    "startTimeMs": 250,
+    "durationMs": 577,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 67,
+    "startTimeMs": 827,
+    "durationMs": 1154,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 67,
+    "startTimeMs": 1981,
+    "durationMs": 577,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 65,
+    "startTimeMs": 2558,
+    "durationMs": 577,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 5,
+      "finger": 4
+    }
+  },
+  {
+    "note": 63,
+    "startTimeMs": 3135,
+    "durationMs": 577,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 62,
+    "startTimeMs": 3712,
+    "durationMs": 577,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 2,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 63,
+    "startTimeMs": 4288,
+    "durationMs": 1731,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 60,
+    "startTimeMs": 6885,
+    "durationMs": 341,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 63,
+    "startTimeMs": 7226,
+    "durationMs": 182,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 67,
+    "startTimeMs": 7407,
+    "durationMs": 215,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 72,
+    "startTimeMs": 7623,
+    "durationMs": 1143,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 72,
+    "startTimeMs": 8766,
+    "durationMs": 779,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 72,
+    "startTimeMs": 9545,
+    "durationMs": 779,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 74,
+    "startTimeMs": 10324,
+    "durationMs": 779,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 5,
+      "finger": 4
+    }
+  },
+  {
+    "note": 70,
+    "startTimeMs": 11103,
+    "durationMs": 390,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 11493,
+    "durationMs": 390,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 4,
+      "finger": 3
+    }
+  },
+  {
+    "note": 70,
+    "startTimeMs": 11882,
+    "durationMs": 2175,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 3,
+      "finger": 2
+    }
+  }
+]

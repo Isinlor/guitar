@@ -5,6 +5,8 @@ import { getNoteEvents } from '@/model/midi';
 import { Midi } from '@tonejs/midi';
 import { ref } from 'vue';
 
+import { Settings, importer, midi } from '@coderline/alphatab';
+
 import FingeringWorker from '@/model/worker?worker';
 
 const ukulele = {
@@ -33,18 +35,41 @@ const handleFileUpload = (event: Event) => {
         const track = midi.tracks.filter(track => track.notes.length > 0)[0];
         const noteEvents = getNoteEvents(track);
         const worker = new FingeringWorker();
+        const time = performance.now();
         worker.onmessage = (e) => {
           music.value = e.data;
+          console.log('Time taken:', performance.now() - time);
         };
-        worker.postMessage({ noteEvents, instrumentName: 'ukulele' });
+        worker.postMessage({ noteEvents, instrumentName: 'guitar' });
         return;
       }
 
-      try {
-        music.value = JSON.parse(e.target?.result as string);
-      } catch (error) {
-        console.error('Error parsing JSON:', error);
-      }
+      const score = importer.ScoreLoader.loadScoreFromBytes(new Uint8Array(await file.arrayBuffer()))
+
+      const settings = new Settings();
+
+      // Setup generator and midi file handler
+      const midiFile = new midi.MidiFile();
+      const handler = new midi.AlphaSynthMidiFileHandler(midiFile, true /* For SMF1.0 export */);
+      const generator = new midi.MidiFileGenerator(score, settings, handler);
+
+      // start generation
+      generator.generate();
+
+      const midiScore = new Midi(midiFile.toBinary().buffer);
+      console.log(midiScore);
+
+      const track = midiScore.tracks.filter(track => track.notes.length > 0)[0];
+      const noteEvents = getNoteEvents(track);
+      const worker = new FingeringWorker();
+
+      const time = performance.now();
+      worker.onmessage = (e) => {
+        music.value = e.data;
+        console.log('Time taken:', performance.now() - time);
+      };
+      worker.postMessage({ noteEvents, instrumentName: 'guitar' });
+      return;
 
     };
     reader.readAsText(file);

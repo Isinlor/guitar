@@ -1,0 +1,1341 @@
+[
+  {
+    "note": 40,
+    "startTimeMs": 0,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 353,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 706,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 1059,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 1412,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 1765,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 2118,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 2471,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 42,
+    "startTimeMs": 2824,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 3176,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 42,
+    "startTimeMs": 3529,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 3882,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 48,
+    "startTimeMs": 4235,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 48,
+    "startTimeMs": 4588,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 4941,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 5294,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 5647,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 6000,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 6353,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 6706,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 7059,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 7412,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 7765,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 8118,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 8471,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 48,
+    "startTimeMs": 8824,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 9176,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 9529,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 9882,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 42,
+    "startTimeMs": 10235,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 10588,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 42,
+    "startTimeMs": 10941,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 11294,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 11647,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 12000,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 12353,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 12706,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 13059,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 48,
+    "startTimeMs": 13412,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 13765,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 14118,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 14471,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 14824,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 15176,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 15529,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 52,
+    "startTimeMs": 15882,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 50,
+    "startTimeMs": 16235,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 48,
+    "startTimeMs": 16588,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 16941,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 17294,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 17647,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 18000,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 18353,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 18706,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 19059,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 19412,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 19765,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 20118,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 20471,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 48,
+    "startTimeMs": 20824,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 47,
+    "startTimeMs": 21176,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 5,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 45,
+    "startTimeMs": 21529,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 5,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 5,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 21882,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 42,
+    "startTimeMs": 22235,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 2,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 2,
+      "finger": 1
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 22588,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 43,
+    "startTimeMs": 22941,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 6,
+        "fret": 3,
+        "finger": 2
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 3,
+      "finger": 2
+    }
+  },
+  {
+    "note": 40,
+    "startTimeMs": 23294,
+    "durationMs": 353,
+    "fingeringAlternatives": [
+      {
+        "string": 6,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 6,
+      "fret": 0,
+      "finger": 0
+    }
+  }
+]

@@ -1,9 +1,47 @@
+import { importer, midi, Settings } from '@coderline/alphatab';
 import { Midi, Track } from "@tonejs/midi";
+
 import fs from 'fs';
 import { MidiNote, NoteEvent } from "./types";
 
 export function readMidiFile(filename: string) {
   return new Midi(fs.readFileSync(filename));
+}
+
+export function readFile(filename: string): Midi {
+  
+  const file = fs.readFileSync(filename);
+  
+  const errors = []
+
+  try {
+    return new Midi(file);
+  } catch (e) {
+    errors.push(e);
+  }
+  
+  try {
+    
+    const score = importer.ScoreLoader.loadScoreFromBytes(new Uint8Array(file))
+
+    const settings = new Settings();
+
+    // Setup generator and midi file handler
+    const midiFile = new midi.MidiFile();
+    const handler = new midi.AlphaSynthMidiFileHandler(midiFile, true);
+    const generator = new midi.MidiFileGenerator(score, settings, handler);
+
+    // start generation
+    generator.generate();
+
+    return new Midi(midiFile.toBinary().buffer);
+
+  } catch (e) {
+    errors.push(e);
+  }
+
+  throw new Error(`Could not read file ${filename} as MIDI or AlphaTab file: ${errors.map((e: any) => e.message).join(', ')}`);
+
 }
 
 export function writeMidiFile(midi: Midi, filename: string) {

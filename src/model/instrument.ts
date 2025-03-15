@@ -308,7 +308,7 @@ export class Instrument {
   
     // check if transposition is possible
     if (midiRange.range > instrumentRange.range) throw new Error(
-      `The midi has range ${midiRange.range} of notes, which is greater than the range of the ${this.name} notes.`
+      `The midi has range ${midiRange.range} of notes, which is greater than the range ${instrumentRange.range} of the ${this.name} notes.`
     );
   
     const lowestNotesDistance = instrumentRange.lowest - midiRange.min;

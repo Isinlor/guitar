@@ -70,6 +70,7 @@ const detectionWorker = new AutoCorrelateWorker();
 
 const time = ref(0);
 const note = ref(0);
+const playedNote = ref<number | undefined>(undefined);
 const correlated = ref<any>({});
 const results = ref<{ record: { time: number, detected: number }[], noteEvent: NoteEvent }[]>([]);
 const detection = useRafFn(() => {
@@ -91,6 +92,8 @@ const detection = useRafFn(() => {
     expectedFrequency: frequencyFromNoteNumber(note.value)
   });
 
+
+
   detectionWorker.onmessage = (e) => {
   
     const { index, time, result } = e.data;
@@ -98,16 +101,18 @@ const detection = useRafFn(() => {
     const playedNoteEvent = music.value[index];
     const expectedNote = playedNoteEvent.note;
 
+    playedNote.value = noteNumberFromFrequency(result.frequency);
+
     if (noteNumberFromFrequency(result.frequency) === expectedNote) {
       playedNoteEvent.success = true;
     }
 
     // console.log(results.value);
 
-    const noteEvent = { note: playedNoteEvent.note, startTimeMs: playedNoteEvent.startTimeMs, durationMs: playedNoteEvent.durationMs };
+    // const noteEvent = { note: playedNoteEvent.note, startTimeMs: playedNoteEvent.startTimeMs, durationMs: playedNoteEvent.durationMs };
 
-    results.value[index] = results.value[index] ?? { record: [], noteEvent };
-    results.value[index].record.push({ time, detected: noteNumberFromFrequency(result.frequency), result });
+    // results.value[index] = results.value[index] ?? { record: [], noteEvent };
+    // results.value[index].record.push({ time, detected: noteNumberFromFrequency(result.frequency), result });
     
   }
 
@@ -193,7 +198,9 @@ function stop() {
 
   <div>Time {{ time }}</div>
 
-  <div>Current note {{ note }}</div>
+  <div>Expected note {{ note }}</div>
+
+  <div>Played note {{ playedNote }}</div>
 
   <div>Correlated note {{ correlated }}</div>
 

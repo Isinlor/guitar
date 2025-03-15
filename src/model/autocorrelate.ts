@@ -15,8 +15,8 @@ export default function autoCorrelate(buf: Float32Array, sampleRate: number, exp
       rms += val * val; // Sum of squares of the buffer values
   }
   rms = Math.sqrt(rms / SIZE); // Compute the root mean square
-  if (rms < 0.005) // Check if the RMS is below a threshold value
-      return -1; // Return -1 if there's not enough signal to process
+  // if (rms < 0.001) // Check if the RMS is below a threshold value
+  //     return -1; // Return -1 if there's not enough signal to process
 
   // Trimming Silence:
   // This section trims the buffer to remove leading and trailing silence or low amplitude sections.

@@ -1,0 +1,3037 @@
+[
+  {
+    "note": 61,
+    "startTimeMs": 1667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 66,
+    "startTimeMs": 2000,
+    "durationMs": 500,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 2500,
+    "durationMs": 167,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 2667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 66,
+    "startTimeMs": 3000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 3667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 4
+    }
+  },
+  {
+    "note": 71,
+    "startTimeMs": 4000,
+    "durationMs": 1000,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 2,
+        "fret": 7,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 4,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 5000,
+    "durationMs": 1000,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 66,
+    "startTimeMs": 6000,
+    "durationMs": 500,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 6500,
+    "durationMs": 167,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 6667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 64,
+    "startTimeMs": 7000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 2,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 67,
+    "startTimeMs": 7667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 7,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 61,
+    "startTimeMs": 8000,
+    "durationMs": 1667,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 61,
+    "startTimeMs": 9667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 66,
+    "startTimeMs": 10000,
+    "durationMs": 500,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 10500,
+    "durationMs": 167,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 10667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 66,
+    "startTimeMs": 11000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 11667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 6,
+      "finger": 3
+    }
+  },
+  {
+    "note": 76,
+    "startTimeMs": 12000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 7,
+      "finger": 4
+    }
+  },
+  {
+    "note": 75,
+    "startTimeMs": 12667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 6,
+      "finger": 3
+    }
+  },
+  {
+    "note": 74,
+    "startTimeMs": 13000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 7,
+      "finger": 4
+    }
+  },
+  {
+    "note": 70,
+    "startTimeMs": 13667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 4
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 6,
+      "finger": 3
+    }
+  },
+  {
+    "note": 74,
+    "startTimeMs": 14000,
+    "durationMs": 500,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 7,
+      "finger": 4
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 14500,
+    "durationMs": 167,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 2
+    }
+  },
+  {
+    "note": 72,
+    "startTimeMs": 14667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 15000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 4,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 15667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 66,
+    "startTimeMs": 16000,
+    "durationMs": 1667,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 6,
+      "finger": 4
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 17667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 18000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 18667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 19000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 1
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 19667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 74,
+    "startTimeMs": 20000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 5,
+      "finger": 2
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 20667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 1
+    }
+  },
+  {
+    "note": 72,
+    "startTimeMs": 21000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 5,
+      "finger": 2
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 21667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 22000,
+    "durationMs": 500,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 2,
+      "finger": 2
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 22500,
+    "durationMs": 167,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 4
+    }
+  },
+  {
+    "note": 72,
+    "startTimeMs": 22667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 3,
+      "finger": 3
+    }
+  },
+  {
+    "note": 60,
+    "startTimeMs": 23000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 0,
+      "finger": 0
+    }
+  },
+  {
+    "note": 61,
+    "startTimeMs": 23667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 1,
+      "finger": 1
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 24000,
+    "durationMs": 1667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 25667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 26000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 26667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 27000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 2
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 27667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 76,
+    "startTimeMs": 28000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 7,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 7,
+      "finger": 4
+    }
+  },
+  {
+    "note": 75,
+    "startTimeMs": 28667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 6,
+      "finger": 3
+    }
+  },
+  {
+    "note": 74,
+    "startTimeMs": 29000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 5,
+      "finger": 2
+    }
+  },
+  {
+    "note": 70,
+    "startTimeMs": 29667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 1,
+        "finger": 4
+      },
+      {
+        "string": 2,
+        "fret": 6,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 3,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 6,
+      "finger": 3
+    }
+  },
+  {
+    "note": 74,
+    "startTimeMs": 30000,
+    "durationMs": 500,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 7,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 5,
+      "finger": 2
+    }
+  },
+  {
+    "note": 73,
+    "startTimeMs": 30500,
+    "durationMs": 167,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 1,
+      "fret": 4,
+      "finger": 1
+    }
+  },
+  {
+    "note": 72,
+    "startTimeMs": 30667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 1,
+        "fret": 3,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 5,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 4,
+      "fret": 5,
+      "finger": 2
+    }
+  },
+  {
+    "note": 68,
+    "startTimeMs": 31000,
+    "durationMs": 667,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 4,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 1,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 4,
+      "finger": 1
+    }
+  },
+  {
+    "note": 69,
+    "startTimeMs": 31667,
+    "durationMs": 333,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 1
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 2
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 3
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 5,
+        "finger": 4
+      },
+      {
+        "string": 4,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 1,
+        "fret": 0,
+        "finger": 0
+      }
+    ],
+    "fingering": {
+      "string": 2,
+      "fret": 5,
+      "finger": 3
+    }
+  },
+  {
+    "note": 66,
+    "startTimeMs": 32000,
+    "durationMs": 1667,
+    "fingeringAlternatives": [
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 1
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 1
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 2
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 2
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 3
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 3
+      },
+      {
+        "string": 2,
+        "fret": 2,
+        "finger": 4
+      },
+      {
+        "string": 3,
+        "fret": 6,
+        "finger": 4
+      }
+    ],
+    "fingering": {
+      "string": 3,
+      "fret": 6,
+      "finger": 4
+    }
+  }
+]

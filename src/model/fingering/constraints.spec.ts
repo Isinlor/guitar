@@ -431,7 +431,90 @@ describe('FingerStringJumpingPenalty', () => {
 
     expect(penalty.getPenalty()).toBe(fingerStringJumpingPenalty(track));
   });
+
+  describe('Performance', () => {
+    
+    // Helper function to measure execution time
+    const measureTime = (fn: () => void): number => {
+      const start = process.hrtime.bigint();
+      fn();
+      const end = process.hrtime.bigint();
+      return Number(end - start) / 1e6; // Convert to milliseconds
+    };
+
+    it('should handle very large tracks efficiently', () => {
+
+      const track: TrackFingering = [];
+      const numNotes = 1000;
+      for (let i = 0; i < numNotes; i++) {
+        track.push(createRandomNoteEvent());
+      }
+
+      const penalty = new HandMovementPenalty(track);
+      expect(penalty.getPenalty()).toBe(handMovementPenalty(track));
+
+      const changes = 100;
+      const timeA = measureTime(() => {
+        for (let i = 0; i < changes; i++) {
+          penalty.change(i, track[i].fingering, createRandomFingering());
+        }
+      });
+
+      const timeB = measureTime(() => {
+        for (let i = 0; i < changes; i++) {
+          track[i].fingering = createRandomFingering();
+          handMovementPenalty(track);
+        }
+      });
+
+      expect(timeA).toBeLessThan(timeB);
+
+    });
+
+    it('should handle very large tracks efficiently', () => {
+
+      const track: TrackFingering = [];
+      const numNotes = 10000;
+      for (let i = 0; i < numNotes; i++) {
+        track.push(createRandomNoteEvent());
+      }
+
+      const penalty = new FingerStringJumpingPenalty(track);
+      expect(penalty.getPenalty()).toBe(fingerStringJumpingPenalty(track));
+
+      const changes = 100;
+      const timeA = measureTime(() => {
+        for (let i = 0; i < changes; i++) {
+          penalty.change(i, track[i].fingering, createRandomFingering());
+        }
+      });
+
+      const timeB = measureTime(() => {
+        for (let i = 0; i < changes; i++) {
+          track[i].fingering = createRandomFingering();
+          fingerStringJumpingPenalty(track);
+        }
+      });
+
+      expect(timeA).toBeLessThan(timeB);
+
+    });
+
+  })
+
 });
+
+function createRandomNoteEvent(): NoteEventWithFingering {
+  return createNoteEvent(createRandomFingering());
+}
+
+function createRandomFingering(): Fingering {
+  return {
+    finger: Math.ceil(Math.random() * 4),
+    fret: Math.ceil(Math.random() * 12),
+    string: Math.ceil(Math.random() * 6)
+  };
+}
 
 // Helper function to create a NoteEventWithFingering
 function createNoteEvent(fingering: Fingering): NoteEventWithFingering {
