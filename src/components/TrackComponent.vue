@@ -1,310 +1,424 @@
+<template>
+  <div class="track-container">
+    <canvas ref="canvasEl"></canvas>
+    <div class="playback-indicator" :style="{ left: `${playbackIndicatorPosition}px` }"></div>
+  </div>
+  <button @click="play" :disabled="playState === 'running'">Play</button>
+  <button @click="pause" :disabled="playState !== 'running'">Pause</button>
+  <button @click="stop">Stop</button>
+  <div>
+    <label for="speedControl">Speed:</label>
+    <input id="speedControl" type="range" v-model="playbackRateInput" min="0.1" max="2" step="0.1" />
+    <span>{{ playbackRateInput }}x</span>
+  </div>
+  <div>
+    <label for="seekSlider">Seek:</label>
+    <input
+      id="seekSlider"
+      type="range"
+      v-model="manualSeekTimeMs"
+      :max="maxTimeMs"
+      :disabled="playState === 'running'"
+      @input="handleSeek"
+      min="0"
+      step="1"
+    />
+    <span>{{ formatTime(manualSeekTimeMs) }} / {{ formatTime(maxTimeMs) }}</span>
+  </div>
+  <!-- For debugging audio input -->
+  <div>Detected Note MIDI: {{ detectedNoteDebug }}</div>
+  <div>Expected Note MIDI: {{ expectedNoteDebug }}</div>
+</template>
+
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue';
+import type { TrackFingeringWithAlternatives, NoteEventWithFingeringAndAlternatives } from '@/model/types';
+import { useWindowSize } from '@vueuse/core';
+import { frequencyFromNoteNumber, noteNumberFromFrequency } from '@/model/midi'; // Added
+import AutoCorrelateWorker from '@/model/worker/autocorrelateWorker?worker'; // Added
 
-import { frequencyFromNoteNumber, noteNumberFromFrequency } from '@/model/midi';
-import AutoCorrelateWorker from '@/model/worker/autocorrelateWorker?worker';
-import { useRafFn, useWindowSize } from '@vueuse/core';
-import { computed, ref, watch, watchEffect } from 'vue';
-import { NoteEvent, NoteEventWithFingeringAndAlternatives, TrackFingeringWithAlternatives } from '../model/types';
-
-const windowSize = useWindowSize();
-
-const conversion = computed(() => 25 / music.value.reduce((acc, tab) => Math.min(acc, tab.durationMs), 350));
-
-const offset = 200;
-
-// define music props Vue
 const props = defineProps<{
-  music: TrackFingeringWithAlternatives,
+  music: TrackFingeringWithAlternatives, // Assuming items here can have their 'success' property updated reactively
   instrument: { strings: number, frets: number }
 }>();
 
-const music = computed(() => props.music.map((tab: NoteEventWithFingeringAndAlternatives) => {
-  return {
-    ...tab,
-    startTimeMs: tab.startTimeMs + 5000,
-    success: false
-  };
-}));
+const canvasEl = ref<HTMLCanvasElement | null>(null);
+let ctx: CanvasRenderingContext2D | null = null;
+const windowSize = useWindowSize();
+const playbackIndicatorPosition = 100;
+const noteHeight = 20;
+const stringSpacing = 30;
 
-const tabsGroupedByStrings = computed(() => {
-  return music.value.reduce((acc, tab) => {
-    if (!acc[tab.fingering.string]) {
-      acc[tab.fingering.string] = [];
-    }
-    acc[tab.fingering.string].push(tab);
-    return acc;
-  }, {} as Record<string, (NoteEventWithFingeringAndAlternatives & { success?: boolean })[]>);
-});
+// Audio processing refs
+let audioContext: AudioContext | null = null;
+let analyser: AnalyserNode | null = null;
+let dataArray: Float32Array | null = null;
+const detectionWorker = new AutoCorrelateWorker();
+const detectedNoteDebug = ref(0); // For UI feedback - will show MIDI note number
+const expectedNoteDebug = ref(0); // For UI feedback - will show MIDI note number
+
+const processedMusic = computed(() => props.music.map((tab, index) => ({
+  ...tab,
+  originalIndex: index, // Keep track of original index to update the prop
+  startTimeMs: tab.startTimeMs,
+  // success is directly from props.music[index].success
+  // No need to include 'success' here explicitly if it's already on 'tab' from props.music
+})));
+
+const conversion = computed(() => 0.025);
 
 const maxTimeMs = computed(() => {
-  return music.value.reduce((acc, tab) => {
-    return Math.max(acc, tab.startTimeMs + tab.durationMs);
-  }, 0);
+  return processedMusic.value.reduce((acc, tab) => Math.max(acc, tab.startTimeMs + tab.durationMs), 0);
 });
 
-const tabs = ref<HTMLElement>();
+const canvasHeight = computed(() => props.instrument.strings * stringSpacing + stringSpacing);
 
-const playState = ref('idle');
-let animation = ref<Animation>();
-const playbackRate = ref(1);
+const playState = ref<'idle' | 'running' | 'paused' | 'finished'>('idle');
+const currentTime = ref(0);
+const animationRef = ref<Animation | null>(null);
+const playbackRateInput = ref("1.0");
+const playbackRate = computed(() => parseFloat(playbackRateInput.value));
+const manualSeekTimeMs = ref(0);
 
-watchEffect(() => {
-  if(animation.value) animation.value.playbackRate = playbackRate.value;
-});
+function formatTime(ms: number): string {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
 
+// --- Audio Setup ---
+async function setupAudio() {
+  if (audioContext) return; // Already setup
+  try {
+    audioContext = new window.AudioContext({ latencyHint: 'interactive', sampleRate: 44100 });
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const audioInput = audioContext.createMediaStreamSource(stream);
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048; // Standard FFT size
+    dataArray = new Float32Array(analyser.frequencyBinCount); // Should be analyser.fftSize / 2
+    audioInput.connect(analyser);
+    console.log('Audio setup complete.');
+  } catch (e) {
+    console.error('Error setting up audio:', e);
+    // Handle error - e.g., show a message to the user
+  }
+}
 
+detectionWorker.onmessage = (e) => {
+  const { originalIndex, /*time, // time not used here */ result, detectedFrequency } = e.data;
 
-let analyser: AnalyserNode;
-let dataArray = new Float32Array(4096 / 2);
-let audioContext = new window.AudioContext({
-  latencyHint: 'interactive',
-  sampleRate: 44100
-});
-navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-  let audioInput = audioContext.createMediaStreamSource(stream);
-  analyser = audioContext.createAnalyser();
-  audioInput.connect(analyser);
-});
+  if (originalIndex === undefined || originalIndex < 0 || originalIndex >= props.music.length) return;
 
-const detectionWorker = new AutoCorrelateWorker();
+  const noteEvent = props.music[originalIndex];
+  if (!noteEvent) return;
 
-const time = ref(0);
-const note = ref(0);
-const correlated = ref<any>({});
-const results = ref<{ record: { time: number, detected: number }[], noteEvent: NoteEvent }[]>([]);
-const detection = useRafFn(() => {
-  time.value = Number(animation.value?.currentTime ?? 0);
+  const expectedMidiNote = noteEvent.note;
+  const detectedMidiNote = detectedFrequency > 0 ? noteNumberFromFrequency(detectedFrequency) : 0;
 
-  const playedNoteEventIndex =  music.value.findIndex(tab => tab.startTimeMs <= time.value && (tab.startTimeMs + tab.durationMs) >= time.value);
-  const playedNoteEvent = music.value[playedNoteEventIndex];
-  note.value = playedNoteEvent?.note ?? 0;
+  // For debugging
+  detectedNoteDebug.value = detectedMidiNote;
+  // expectedNoteDebug is updated in performAudioDetection
 
-  if(!playedNoteEvent) return;
+  if (result && detectedMidiNote === expectedMidiNote) { // Assuming worker sends a 'result' boolean
+    if (!noteEvent.success) {
+        noteEvent.success = true;
+        // Reactivity should ensure processedMusic updates, and renderLoop redraws.
+    }
+  }
+  // No 'else { noteEvent.success = false }' as success is usually a one-way street or reset on stop/new play.
+};
+
+function performAudioDetection() {
+  if (!analyser || !dataArray || !audioContext || playState.value !== 'running') {
+    expectedNoteDebug.value = 0; // Clear expected note if not detecting
+    return;
+  }
 
   analyser.getFloatTimeDomainData(dataArray);
 
-  detectionWorker.postMessage({
-    index: playedNoteEventIndex,
-    time: time.value,
-    buffer: dataArray,
-    sampleRate: audioContext.sampleRate,
-    expectedFrequency: frequencyFromNoteNumber(note.value)
-  });
+  const currentTrackTime = currentTime.value;
 
-  detectionWorker.onmessage = (e) => {
-  
-    const { index, time, result } = e.data;
+  const activeNote = processedMusic.value.find(note =>
+    currentTrackTime >= note.startTimeMs && currentTrackTime < (note.startTimeMs + note.durationMs)
+  );
 
-    const playedNoteEvent = music.value[index];
-    const expectedNote = playedNoteEvent.note;
+  if (activeNote) {
+    expectedNoteDebug.value = activeNote.note; // Update debug display
 
-    if (noteNumberFromFrequency(result.frequency) === expectedNote) {
-      playedNoteEvent.success = true;
+    // Avoid sending messages if the note is already marked successful
+    if (!activeNote.success) {
+        detectionWorker.postMessage({
+        originalIndex: activeNote.originalIndex,
+        buffer: dataArray, // This posts a copy, consider Transferable if performance is an issue
+        sampleRate: audioContext.sampleRate,
+        expectedFrequency: frequencyFromNoteNumber(activeNote.note)
+        });
     }
+  } else {
+    expectedNoteDebug.value = 0; // No note expected
+  }
+}
 
-    // console.log(results.value);
 
-    const noteEvent = { note: playedNoteEvent.note, startTimeMs: playedNoteEvent.startTimeMs, durationMs: playedNoteEvent.durationMs };
+// --- Drawing and Animation ---
+function drawStrings() {
+  if (!ctx || !canvasEl.value) return;
+  ctx.clearRect(0, 0, canvasEl.value.width, canvasEl.value.height);
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < props.instrument.strings; i++) {
+    const y = stringSpacing * (i + 1);
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvasEl.value.width, y);
+    ctx.stroke();
+  }
+}
+function getNoteColor(note: NoteEventWithFingeringAndAlternatives & { success?: boolean }): string {
+  if (note.success) return '#00FF00';
+  const fingerColors: Record<number, string> = {
+    0: '#808080', 1: '#FFA500', 2: '#A020F0', 3: '#1E90FF', 4: '#9FB800',
+  };
+  return fingerColors[note.fingering.finger] || '#FF4500';
+}
+function drawNotes(scrollOffset = 0) {
+  if (!ctx || !canvasEl.value) return;
+  processedMusic.value.forEach(note => { // processedMusic has originalIndex and direct access to success from prop
+    const x = playbackIndicatorPosition + (note.startTimeMs * conversion.value) - scrollOffset;
+    const y = stringSpacing * note.fingering.string - (noteHeight / 2);
+    const width = note.durationMs * conversion.value;
+    if (x + width < 0 || x > canvasEl.value!.width) return;
 
-    results.value[index] = results.value[index] ?? { record: [], noteEvent };
-    results.value[index].record.push({ time, detected: noteNumberFromFrequency(result.frequency), result });
-    
+    ctx.fillStyle = getNoteColor(props.music[note.originalIndex]); // Use original prop item for success flag
+    ctx.fillRect(x, y, width, noteHeight);
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '14px Arial';
+    ctx.fillText(note.fingering.fret.toString(), x + width / 2, y + noteHeight / 2);
+  });
+}
+
+function renderLoop(currentScrollOffset: number) {
+  if (!ctx || !canvasEl.value) return;
+  const visibleWidth = canvasEl.value.parentElement?.clientWidth || windowSize.width.value;
+  if (canvasEl.value.width !== visibleWidth) canvasEl.value.width = visibleWidth;
+  if (canvasEl.value.height !== canvasHeight.value) canvasEl.value.height = canvasHeight.value;
+
+  drawStrings();
+  drawNotes(currentScrollOffset);
+}
+
+function setupAnimation() {
+  if (animationRef.value) animationRef.value.cancel();
+
+  animationRef.value = new Animation(
+    new KeyframeEffect(null, null, { duration: maxTimeMs.value, fill: 'forwards' }),
+    document.timeline
+  );
+  animationRef.value.playbackRate = playbackRate.value;
+
+  animationRef.value.onfinish = () => {
+    playState.value = 'finished';
+    currentTime.value = maxTimeMs.value;
+    manualSeekTimeMs.value = maxTimeMs.value;
+    performAudioDetection(); // One last detection call at the very end
+    renderLoop(maxTimeMs.value * conversion.value);
+  };
+  animationRef.value.oncancel = () => { // This is effectively 'stop'
+    playState.value = 'idle';
+    // currentTime.value = 0; // Set by stop() or handleSeek()
+    // manualSeekTimeMs.value = 0;
+    props.music.forEach(note => note.success = false); // Reset success states on stop
+    renderLoop(currentTime.value * conversion.value); // Render at current time (e.g. 0 if stopped)
+  };
+}
+
+watch(playbackRate, (newRate) => {
+  if (animationRef.value) animationRef.value.playbackRate = newRate;
+});
+
+watch([() => props.music, windowSize, () => props.instrument.strings], () => {
+  nextTick(() => {
+    if (canvasEl.value) {
+      const visibleWidth = canvasEl.value.parentElement?.clientWidth || windowSize.width.value;
+      canvasEl.value.width = visibleWidth;
+      canvasEl.value.height = canvasHeight.value;
+    }
+    manualSeekTimeMs.value = 0;
+    currentTime.value = 0;
+    props.music.forEach(note => note.success = false); // Reset success on new music
+    setupAnimation();
+    renderLoop(currentTime.value * conversion.value);
+  });
+}, { deep: true, immediate: true });
+
+let rafId: number | null = null;
+function animationStep() {
+  if (!animationRef.value) { rafId = null; return; }
+
+  if (playState.value !== 'running') {
+    if (playState.value === 'paused' && animationRef.value?.currentTime != null) {
+        const currentAnimTime = animationRef.value.currentTime;
+        manualSeekTimeMs.value = currentAnimTime;
+        currentTime.value = currentAnimTime; // Keep currentTime synced
+        renderLoop(currentAnimTime * conversion.value);
+    }
+    rafId = null;
+    return;
   }
 
-}, { fpsLimit: Math.ceil(audioContext.sampleRate / dataArray.length) });
+  const currentAnimTime = animationRef.value.currentTime ?? 0;
+  currentTime.value = currentAnimTime;
+  manualSeekTimeMs.value = currentAnimTime;
 
-watch([music], () => {
-  if(animation.value) animation.value?.cancel();
-  animation.value = tabs.value?.animate(
-    { transform: `translate(${-maxTimeMs.value * conversion.value}px)` },
-    { duration: maxTimeMs.value, playbackRate: playbackRate.value }
-  );
-  pause();
-  if(!animation.value) return;
-  animation.value.onfinish = () => {
-    playState.value = 'finished';
-    music.value.forEach(tab => tab.success = false);
-    detection.pause();
-  };
-  animation.value.oncancel = () => {
-    playState.value = 'idle';
-    music.value.forEach(tab => tab.success = false);
-    detection.pause();
-  };
-}, { immediate: true });
+  performAudioDetection();
 
-function play() {
-  animation.value?.play();
+  renderLoop(currentAnimTime * conversion.value);
+  rafId = requestAnimationFrame(animationStep);
+}
+
+async function play() {
+  if (!audioContext) await setupAudio();
+  if (!audioContext) {
+      console.error("Cannot play: Audio context not available.");
+      return;
+  }
+  // It's good practice to resume context on user gesture
+  if (audioContext.state === 'suspended') {
+    await audioContext.resume();
+  }
+
+
+  if (!animationRef.value) setupAnimation(); // Should be set up by watch
+  if (!animationRef.value) return;
+
+  if (playState.value === 'finished') {
+    // For re-play, reset time and success states
+    currentTime.value = 0;
+    manualSeekTimeMs.value = 0;
+    animationRef.value.currentTime = 0;
+    props.music.forEach(note => note.success = false);
+    // setupAnimation(); // No need to fully re-setup, just reset time and state
+  }
+
+  if (playState.value === 'paused' || playState.value === 'idle' || playState.value === 'finished') {
+    animationRef.value.currentTime = manualSeekTimeMs.value;
+    currentTime.value = manualSeekTimeMs.value; // Sync currentTime
+
+    // Reset success flags for notes that haven't been successfully played yet or will be re-evaluated
+    props.music.forEach(note => {
+        if (note.startTimeMs >= manualSeekTimeMs.value) {
+            note.success = false;
+        }
+        // Optionally, keep success for notes already passed and correctly played:
+        // else if (note.startTimeMs < manualSeekTimeMs.value && note.success) { /* keep it */ }
+        // else { note.success = false; } // for notes passed but not successful
+    });
+  }
+
+  animationRef.value.play(); // This might throw if context is suspended and not resumed.
   playState.value = 'running';
-  detection.resume();
+
+  if (rafId === null) { // Start RAF loop if not already running
+    animationStep();
+  }
 }
 
 function pause() {
-  animation.value?.pause();
-  playState.value = 'paused';
-  detection.pause();
+  if (animationRef.value && playState.value === 'running') {
+    animationRef.value.pause();
+    playState.value = 'paused';
+    if (audioContext && audioContext.state === 'running') { // Suspend audio context only if it's running
+        audioContext.suspend();
+    }
+    const currentAnimTime = animationRef.value.currentTime ?? 0;
+    // currentTime and manualSeekTimeMs are already updated by animationStep or play
+    renderLoop(currentAnimTime * conversion.value);
+  }
 }
 
 function stop() {
-  animation.value?.cancel();
-  playState.value = 'idle';
-  detection.pause();
+  if (animationRef.value) {
+    // Set current time to 0 before cancel, so oncancel renders at 0
+    animationRef.value.currentTime = 0;
+    currentTime.value = 0;
+    manualSeekTimeMs.value = 0;
+    animationRef.value.cancel(); // Triggers oncancel, which resets success flags and renders
+  }
+  if (audioContext && audioContext.state === 'running') {
+    audioContext.suspend();
+  }
+  playState.value = 'idle'; // Ensure state is idle. oncancel also sets it.
 }
+
+function handleSeek() {
+  if (!animationRef.value) return;
+
+  const seekTime = Number(manualSeekTimeMs.value);
+  currentTime.value = seekTime;
+
+  if (playState.value !== 'running') {
+    animationRef.value.currentTime = seekTime;
+    // Reset success flags for notes ahead of the seek target
+    props.music.forEach(note => {
+        if (note.startTimeMs >= seekTime) {
+            note.success = false;
+        }
+    });
+    renderLoop(seekTime * conversion.value);
+  }
+}
+
+onMounted(async () => {
+  if (canvasEl.value) {
+    ctx = canvasEl.value.getContext('2d');
+    if (ctx) {
+      // Initial watch call handles setup.
+    } else {
+      console.error('Failed to get 2D context');
+    }
+  }
+  // Defer audio setup until first play or user interaction
+});
+
+onUnmounted(() => {
+  if (animationRef.value) animationRef.value.cancel();
+  detectionWorker.terminate();
+  if (audioContext) {
+    audioContext.close().catch(e => console.error("Error closing audio context:", e));
+  }
+});
+
+defineExpose({ play, pause, stop, currentTime, playState, manualSeekTimeMs });
 
 </script>
-<template>
-
-  <div class="track">
-    <div class="indicator" :style="{ left: `${offset}px` }"></div>
-    <div class="scroll-container">
-      <div class="tab-container" ref="tabs">
-        <div class="tab-row" v-for="string in instrument.strings" :key="string">
-          <div 
-            class="string" :class="{ [`string-${string}`]: true }"
-            :style="{ width: `${Math.ceil(offset + maxTimeMs * conversion + windowSize.width.value)}px` }"
-          ></div>
-          <div 
-            v-for="tab in tabsGroupedByStrings[string]"
-            class="note" :class="{ [tab.success ? `success` : `finger-${tab.fingering.finger}`]: true }"
-            :style="{
-              left: `${Math.floor(offset + tab.startTimeMs * conversion)}px`,
-              width: `${Math.floor(tab.durationMs * conversion)}px`
-            }"
-          >
-            {{ tab.fingering.fret }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <button style="margin: 1rem;" @click="play()" v-if="playState !== 'running'">Start playing</button>
-  <button style="margin: 1rem;" @click="pause()" v-else>Pause playing</button>
-  <button style="margin: 1rem;" @click="stop()">Stop playing</button>
-  <input type="range" v-model="playbackRate" min="0.1" max="2" step="0.1" style="margin: 1rem;">
-  {{ playbackRate }} {{ animation?.playbackRate }}
-  <div style="margin: 1rem;">
-    <span class="tag finger-0">Open note</span>
-    <span class="tag finger-1">Finger 1</span>
-    <span class="tag finger-2">Finger 2</span>
-    <span class="tag finger-3">Finger 3</span>
-    <span class="tag finger-4">Finger 4</span>
-  </div>
-
-  <div>Time {{ time }}</div>
-
-  <div>Current note {{ note }}</div>
-
-  <div>Correlated note {{ correlated }}</div>
-
-  <pre>{{ JSON.stringify(results, null, 2) }}</pre>
-
-</template>
 
 <style scoped>
-
-.track {
-  position: relative;
-}
-
-.scroll-container {
+.track-container {
   position: relative;
   width: 100%;
-  overflow-x: scroll;
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding-bottom: 50px;
+  overflow: hidden;
 }
-
-.indicator {
+canvas {
+  display: block;
+}
+.playback-indicator {
   position: absolute;
   top: 0;
+  bottom: 0;
   width: 2px;
-  height: 100%;
   background-color: red;
 }
-
-.tab-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-  position: relative;
+button, input[type="range"], label {
+  margin: 5px;
+  vertical-align: middle;
 }
-
-.tab-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  width: 100%;
-  height: 20px;
-  position: relative;
+div > label {
+  margin-right: 0.5em;
 }
-
-.string {
-  position: absolute;
-  width: 100%;
+input[type="range"] {
+  width: 200px;
 }
-
-.string-1 {
-  border-top: 1px solid #444;
-}
-
-.string-2 {
-  border-top: 1px solid #555;
-}
-
-.string-3 {
-  border-top: 1px solid #666;
-}
-
-.string-4 {
-  border-top: 2px solid #777;
-}
-
-.string-5 {
-  border-top: 2px solid #888;
-}
-
-.string-6 {
-  border-top: 2px solid #999;
-}
-
-.note {
-  position: absolute;
-  top: 0px;
-  color: #fff;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  border: solid 1px #99999950;
-  /*padding: 2px 5px;*/
-  white-space: nowrap;
-  margin-left: 1px;
-  margin-right: 1px;
-}
-
-.tag {
-  color: #fff;
-  font-size: 16px;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 2px 5px;
-  white-space: nowrap;
-  display: inline-block;
-}
-
-/* Green and red can't bu used for other purposes. */ 
-.green, .note.success { background-color: #00FF00; }
-.red, .note.error { background-color: #FF4500; }
-
-.grey, .finger-0 { background-color: #808080; }
-
-.orange, .finger-1 { background-color: #FFA500; }
-.purple, .finger-2 { background-color: #A020F0; }
-.blue, .finger-3 { background-color: #1E90FF; }
-.lime, .finger-4 { background-color: #9FB800; }
-
 </style>
