@@ -3,7 +3,7 @@
 import TrackComponent from '@/components/TrackComponent.vue';
 import { getNoteEvents } from '@/model/midi';
 import { Midi } from '@tonejs/midi';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import FingeringWorker from '@/model/worker?worker';
 
@@ -16,6 +16,9 @@ const guitar = {
   strings: 6,
   frets: 12
 };
+
+const selectedInstrument = ref('guitar');
+const instrument = computed(() => selectedInstrument.value === 'guitar' ? guitar : ukulele);
 
 const music = ref<any>([]); // Initialize music ref
 
@@ -36,7 +39,7 @@ const handleFileUpload = (event: Event) => {
         worker.onmessage = (e) => {
           music.value = e.data;
         };
-        worker.postMessage({ noteEvents, instrumentName: 'ukulele' });
+        worker.postMessage({ noteEvents, instrumentName: selectedInstrument.value });
         return;
       }
 
@@ -54,7 +57,17 @@ const handleFileUpload = (event: Event) => {
 </script>
 
 <template>
+  <div>
+    <label>
+      <input type="radio" value="guitar" v-model="selectedInstrument" />
+      Guitar
+    </label>
+    <label>
+      <input type="radio" value="ukulele" v-model="selectedInstrument" />
+      Ukulele
+    </label>
+  </div>
   <input type="file" accept=".json,.mid" @change="handleFileUpload" />
-  <track-component :music="music" :instrument="guitar" />  
+  <track-component :music="music" :instrument="instrument" />
   <div class="detected-note"></div>
 </template>
