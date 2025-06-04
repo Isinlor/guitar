@@ -10,6 +10,20 @@ This template should help get you started developing with Vue 3 in Vite.
 
 TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
 
+## Using the Makefile
+
+This project includes a Makefile to simplify common development tasks. Here are some of the available targets:
+
+*   `make all`: Installs dependencies, lints the code, runs tests, and builds the project. This is the default target.
+*   `make install`: Installs project dependencies using `npm install`.
+*   `make build`: Builds the project using `npm run build`.
+*   `make test`: Runs unit and end-to-end tests.
+*   `make lint`: Lints the codebase using ESLint.
+*   `make format`: Formats the codebase using Prettier.
+*   `make dev`: Starts the development server.
+
+To use these targets, simply run `make <target_name>` in your terminal from the project root. For example, to build the project, you would run `make build`.
+
 ## Customize configuration
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
