@@ -34,6 +34,12 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 make install
 ```
 
+### Check for issues
+
+```sh
+make checks
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh
@@ -55,11 +61,8 @@ make vitest
 ### Run End-to-End Tests with [Playwright](https://playwright.dev)
 
 ```sh
-# Install browsers for the first run
-make playwright-install
-
 # When testing on CI, must build the project first
-npm run build
+make build
 
 # Runs the end-to-end tests
 make playwright

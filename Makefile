@@ -7,6 +7,9 @@ install: node_modules
 build: install
 	npm run build
 
+# Run all checks
+checks: lint type-check test
+
 # Run unit and e2e tests
 test: vitest playwright
 
@@ -30,6 +33,10 @@ playwright-install: install
 lint: install
 	npm run lint
 
+# Type check the codebase
+type-check: install
+	npm run type-check
+
 # Format the codebase
 format: install
 	npm run format
@@ -43,7 +50,7 @@ preview: install
 	npm run preview
 
 # Run all common tasks: install, lint, test, and build
-all: install lint test build
+all: install checks build
 
 node_modules:
 	npm ci
