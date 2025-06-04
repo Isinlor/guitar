@@ -1,8 +1,9 @@
 import { makeRandomTrackFingering } from './fingering/fingering';
 import { computeComplexity, reportComplexity } from './fingering/penalties';
-import { exhaustiveSearch, iterativeLocalSearch, localSearch, slidingWindowExhaustiveSearch } from './fingering/search';
+import { exhaustiveSearch, iterativeLocalSearch, localSearchTrackFingering, slidingWindowExhaustiveSearch } from './fingering/search';
 import { Instrument } from './instrument';
-import { getUniqueNotes, readMidiFile, transpose, getNoteEventsWithFingeringAlternatives, writeMidiFile } from './midi';
+import { readMidiFile, transpose, writeMidiFile, getNoteEvents } from './midi';
+import { getUniqueNotes, getNoteEventsWithFingeringAlternatives } from './fingering/fingering';
 import fs from 'fs';
 import { Midi } from '@tonejs/midi';
 
@@ -17,7 +18,8 @@ console.log(midi.tracks.map(track => `${track.name} - ${track.instrument.name} -
 
 const track = midi.tracks.filter(track => track.notes.length > 0)[0];
 
-const originalNotes = getUniqueNotes(track);
+const noteEvents = getNoteEvents(track);
+const originalNotes = getUniqueNotes(noteEvents);
 
 const instrument = Instrument.guitar();
 
@@ -28,13 +30,13 @@ transpose(track, transposition);
 // adjust instrument to Acoustic Guitar (nylon)
 track.instrument.number = 24;
 
-const notes = getUniqueNotes(track);
+const notes = getUniqueNotes(noteEvents);
 
 const fingeringAlternatives = instrument.getCompactFingeringAlternativesForNotes(notes);
 
 const totalNumberOfPossibleFingerings = [...fingeringAlternatives.values()].flatMap(a => a).length;
 
-const noteEventsWithStringFretAlternatives = getNoteEventsWithFingeringAlternatives(track, fingeringAlternatives);
+const noteEventsWithStringFretAlternatives = getNoteEventsWithFingeringAlternatives(noteEvents, fingeringAlternatives);
 
 const randomTrackFingering = makeRandomTrackFingering(noteEventsWithStringFretAlternatives);
 
@@ -48,7 +50,7 @@ bestTrackFingering = iterativeLocalSearch(randomTrackFingering, 10, Math.round(l
 
 console.log('complexity', computeComplexity(bestTrackFingering));
 
-bestTrackFingering = localSearch(bestTrackFingering, localSearchSteps, 3);
+bestTrackFingering = localSearchTrackFingering(bestTrackFingering, localSearchSteps, 3);
 
 console.log('complexity', computeComplexity(bestTrackFingering));
 
