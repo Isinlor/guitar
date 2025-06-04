@@ -1,41 +1,49 @@
 .DEFAULT_GOAL := all
 
 # Install project dependencies
-install:
-	npm ci
+install: node_modules
 
 # Build the project
-build:
+build: install
 	npm run build
 
 # Run unit and e2e tests
 test: vitest
 
 # Run Vitest unit tests
-vitest:
+vitest: install
 	npx vitest run
 
 # Run Playwright integration tests
-playwright:
+playwright: playwright-install
 	npx playwright test
 
-playwright-codegen:
+# Generate Playwright code for dev server
+playwright-codegen: playwright-install
 	npx playwright codegen http://localhost:5173
 
-playwright-install:
-	npx playwright install
+# Install Playwright browser
+playwright-install: install
+	npx playwright install chromium
 
 # Lint the codebase
-lint:
+lint: install
 	npm run lint
 
 # Format the codebase
-format:
+format: install
 	npm run format
 
 # Start the development server
-dev:
+dev: install
 	npm run dev
+
+# Start the build preview server
+preview: install
+	npm run preview
 
 # Run all common tasks: install, lint, test, and build
 all: install lint test build
+
+node_modules:
+	npm ci
