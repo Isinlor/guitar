@@ -36,7 +36,7 @@ export function getNoteEvents(track: Track): NoteEvent[] {
  * @returns {MidiNote} The closest MIDI note number corresponding to the input frequency.
  */
 export function noteNumberFromFrequency(frequency: number): MidiNote {
-  var noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
+  const noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
   return Math.round(noteNum) + 69;
 }
 

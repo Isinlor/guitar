@@ -1,5 +1,5 @@
 import { makeRandomTrackFingering } from './fingering/fingering';
-import { computeComplexity, reportComplexity } from './fingering/penalties';
+import { computeComplexity } from './fingering/penalties';
 import { exhaustiveSearch, iterativeLocalSearch, localSearchTrackFingering, slidingWindowExhaustiveSearch } from './fingering/search';
 import { Instrument } from './instrument';
 import { readMidiFile, transpose, writeMidiFile, getNoteEvents } from './midi';
@@ -42,7 +42,7 @@ const randomTrackFingering = makeRandomTrackFingering(noteEventsWithStringFretAl
 
 let bestTrackFingering = randomTrackFingering;
 
-let localSearchSteps = Math.round(20000 * (bestTrackFingering.length / 67) * (totalNumberOfPossibleFingerings / 26));
+const localSearchSteps = Math.round(20000 * (bestTrackFingering.length / 67) * (totalNumberOfPossibleFingerings / 26));
 
 console.log('localSearchSteps', localSearchSteps);
 

@@ -45,8 +45,8 @@ export function iterativeLocalSearch(trackFingering: TrackFingeringWithAlternati
 
   let bestComplexity = Infinity;
   for (let i = 0; i < iterations; i++) {
-    let candidateTrackFingering = localSearchTrackFingering(makeRandomTrackFingering(trackFingering), attemptsPerIteration, disruption);
-    let candidateComplexity = computeComplexity(candidateTrackFingering);
+    const candidateTrackFingering = localSearchTrackFingering(makeRandomTrackFingering(trackFingering), attemptsPerIteration, disruption);
+    const candidateComplexity = computeComplexity(candidateTrackFingering);
     if (candidateComplexity < bestComplexity) {
       trackFingering = candidateTrackFingering;
       bestComplexity = candidateComplexity;
@@ -122,7 +122,7 @@ export function slidingWindowExhaustiveSearch(
   for (let i = 0; i < trackFingering.length - windowSize; i += windowStep) {
     let trackFingeringWindow = trackFingering.slice(i, i + windowSize);
     trackFingeringWindow = exhaustiveSearch(trackFingeringWindow, depth, i === 0 ? 0 : staticContextSize - 1, windowSize);
-    let trackFingeringCandidate = [...trackFingering];
+    const trackFingeringCandidate = [...trackFingering];
     trackFingeringCandidate.splice(i, windowSize, ...trackFingeringWindow);
     if (computeComplexity(trackFingeringCandidate) <= computeComplexity(trackFingering)) {
       trackFingering = trackFingeringCandidate;

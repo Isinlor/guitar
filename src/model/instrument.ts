@@ -124,7 +124,7 @@ export class Instrument {
         if(range < 1) continue; // skip invalid ranges
         
         const isViableRange = fretAlternativesPerNoteEntries.every(
-          ([_, frets]) => frets.some(fret => fret === 0 || (fret >= i && fret <= j))
+          ([, frets]) => frets.some(fret => fret === 0 || (fret >= i && fret <= j))
         );
 
         if (!isViableRange) continue;
@@ -178,7 +178,9 @@ export class Instrument {
 
     notes = [...new Set(notes)]; // remove duplicates
 
-    let { min: minFretNeeded, max: maxFretNeeded, range } = this.getLowestSmallestFretRangeForNotes(notes);
+    const { min: minFretNeededInitial, max: maxFretNeededInitial, range } = this.getLowestSmallestFretRangeForNotes(notes);
+    let minFretNeeded = minFretNeededInitial;
+    let maxFretNeeded = maxFretNeededInitial;
 
     if (fingers === undefined) fingers = Array.from({ length: Math.max(Math.min(4, range), 1) }, (_, i) => i + 1);
     
@@ -196,7 +198,7 @@ export class Instrument {
     }
 
     const compactFingeringAlternatives = new Map();
-    for (let note of notes) {
+    for (const note of notes) {
 
       if (!compactFingeringAlternatives.has(note)) {
         compactFingeringAlternatives.set(note, []);
@@ -276,7 +278,7 @@ export class Instrument {
 
     let transpositionsWithSmallestFretRange: number[] = [];
     let smallestFoundFretRange = Infinity;
-    for (let transposition of this.getAllPossibleTranspositions(notes)) {
+    for (const transposition of this.getAllPossibleTranspositions(notes)) {
       
       const transposedNotes = notes.map(note => note + transposition);
       const fretRanges = this.getViableFretRangesForNotes(transposedNotes);

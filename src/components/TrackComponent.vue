@@ -164,8 +164,9 @@ function stop() {
             class="string" :class="{ [`string-${string}`]: true }"
             :style="{ width: `${Math.ceil(offset + maxTimeMs * conversion + windowSize.width.value)}px` }"
           ></div>
-          <div 
+          <div
             v-for="tab in tabsGroupedByStrings[string]"
+            :key="`${string}-${tab.startTimeMs}`"
             class="note" :class="{ [tab.success ? `success` : `finger-${tab.fingering.finger}`]: true }"
             :style="{
               left: `${Math.floor(offset + tab.startTimeMs * conversion)}px`,
