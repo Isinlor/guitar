@@ -71,7 +71,8 @@ const detectionWorker = new AutoCorrelateWorker();
 const time = ref(0);
 const note = ref(0);
 const correlated = ref<any>({});
-const results = ref<{ record: { time: number, detected: number }[], noteEvent: NoteEvent }[]>([]);
+interface AutoCorrelateResult { frequency: number; expectedFrequencyRank: number }
+const results = ref<{ record: { time: number, detected: number, result: AutoCorrelateResult }[], noteEvent: NoteEvent }[]>([]);
 const detection = useRafFn(() => {
   time.value = Number(animation.value?.currentTime ?? 0);
 
