@@ -7,10 +7,10 @@ import { ref } from 'vue';
 
 import FingeringWorker from '@/model/worker?worker';
 
-const ukulele = {
-  strings: 4,
-  frets: 12
-};
+// const ukulele = {
+//   strings: 4,
+//   frets: 12
+// };
 
 const guitar = {
   strings: 6,

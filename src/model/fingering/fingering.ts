@@ -70,7 +70,7 @@ export function createTrackFingering(instrument: Instrument, noteEvents: NoteEve
 
   let bestTrackFingering = randomTrackFingering;
 
-  let localSearchSteps = Math.round(20000 * (bestTrackFingering.length / 67) * (totalNumberOfPossibleFingerings / 26));
+  const localSearchSteps = Math.round(20000 * (bestTrackFingering.length / 67) * (totalNumberOfPossibleFingerings / 26));
 
   bestTrackFingering = iterativeLocalSearch(randomTrackFingering, 10, Math.round(localSearchSteps / 10), 5);
   bestTrackFingering = localSearchTrackFingering(bestTrackFingering, localSearchSteps, 3);

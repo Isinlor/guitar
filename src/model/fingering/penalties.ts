@@ -116,7 +116,7 @@ export function fingerVelocityPenalty(trackFingering: TrackFingering) {
 
 export function fingerStringJumpingPenalty(trackFingering: TrackFingering) {
   let penalty = 0;
-  let fingersPositions: Record<number, { string: number }> = {};
+  const fingersPositions: Record<number, { string: number }> = {};
   trackFingering.forEach((noteEvent) => {
     const { finger, string } = noteEvent.fingering;
     const previousFingerPosition = fingersPositions[finger];

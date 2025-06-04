@@ -69,7 +69,7 @@ export class HandMovementPenalty implements SoftConstraint<Fingering>, TrackStat
 
   private calculateInitialPenalty(): void {
     this.movement = this.changeTracker.getChanges().length;
-    this.changeTracker.getChanges().forEach(([_, previous, next]) => {
+    this.changeTracker.getChanges().forEach(([, previous, next]) => {
       this.penalty += this.getChangePenalty(previous, next);
     });
   }
@@ -103,7 +103,7 @@ export class HandMovementPenalty implements SoftConstraint<Fingering>, TrackStat
   }
 
   toString(): string {
-    return this.changeTracker.getList().join(", ") + ';' + this.changeTracker.getChanges().map(([_, previous, next]) => `${previous} -> ${next}`).join(", ");
+    return this.changeTracker.getList().join(", ") + ';' + this.changeTracker.getChanges().map(([, previous, next]) => `${previous} -> ${next}`).join(", ");
   }
 
 }
@@ -140,7 +140,7 @@ export class FingerStringJumpingPenalty implements SoftConstraint<Fingering> {
     Object.values(this.stringChangeTrackerPerFinger).forEach((tracker, finger) => {
       finger = finger + 1; // 0 index to 1 index
       const changes = tracker.getChanges();
-      this.penaltyPerFinger[finger] = changes.reduce((sum, [_, oldString, newString]) => {
+      this.penaltyPerFinger[finger] = changes.reduce((sum, [, oldString, newString]) => {
         return sum + this.getDistance(oldString, newString);
       }, 0);
     });
