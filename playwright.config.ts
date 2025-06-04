@@ -51,45 +51,11 @@ export default defineConfig({
         ...devices['Desktop Chrome']
       }
     },
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox']
-      }
-    },
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari']
-      }
-    }
-
-    /* Test against mobile viewports. */
     // {
-    //   name: 'Mobile Chrome',
+    //   name: 'firefox',
     //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: {
-    //     channel: 'chrome',
-    //   },
+    //     ...devices['Desktop Firefox']
+    //   }
     // },
   ],
 
