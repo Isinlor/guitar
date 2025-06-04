@@ -8,7 +8,7 @@ build: install
 	npm run build
 
 # Run unit and e2e tests
-test: vitest
+test: vitest playwright
 
 # Run Vitest unit tests
 vitest: install
