@@ -27,11 +27,8 @@ const handleFileUpload = (event: Event) => {
   if (file) {
     const reader = new FileReader()
     reader.onload = async (e) => {
-      console.log(file.type)
       if (file.type === 'audio/midi') {
-        console.log('MIDI file detected')
         const midi = new Midi(await file.arrayBuffer())
-        console.log(midi)
         const track = midi.tracks.filter((track) => track.notes.length > 0)[0]
         const noteEvents = getNoteEvents(track)
         const worker = new FingeringWorker()
