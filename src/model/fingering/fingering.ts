@@ -1,4 +1,4 @@
-import { exhaustiveSearch, iterativeLocalSearch, localSearch, slidingWindowExhaustiveSearch } from '@/model/fingering/search';
+import { exhaustiveSearch, iterativeLocalSearch, localSearch, localSearchTrackFingering, slidingWindowExhaustiveSearch } from '@/model/fingering/search';
 import { Instrument } from '@/model/instrument';
 import { Fingering, MidiNote, MidiNoteToFingeringAlternatives, NoteEvent, NoteEventWithFingeringAlternatives } from "@/model/types";
 
@@ -73,7 +73,7 @@ export function createTrackFingering(instrument: Instrument, noteEvents: NoteEve
   let localSearchSteps = Math.round(20000 * (bestTrackFingering.length / 67) * (totalNumberOfPossibleFingerings / 26));
 
   bestTrackFingering = iterativeLocalSearch(randomTrackFingering, 10, Math.round(localSearchSteps / 10), 5);
-  bestTrackFingering = localSearch(bestTrackFingering, localSearchSteps, 3);
+  bestTrackFingering = localSearchTrackFingering(bestTrackFingering, localSearchSteps, 3);
   bestTrackFingering = slidingWindowExhaustiveSearch(bestTrackFingering);
   bestTrackFingering = exhaustiveSearch(bestTrackFingering, 1);
 

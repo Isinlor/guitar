@@ -107,7 +107,7 @@ const detection = useRafFn(() => {
     const noteEvent = { note: playedNoteEvent.note, startTimeMs: playedNoteEvent.startTimeMs, durationMs: playedNoteEvent.durationMs };
 
     results.value[index] = results.value[index] ?? { record: [], noteEvent };
-    results.value[index].record.push({ time, detected: noteNumberFromFrequency(result.frequency), result });
+    results.value[index].record.push({ time, detected: noteNumberFromFrequency(result.frequency) });
     
   }
 
