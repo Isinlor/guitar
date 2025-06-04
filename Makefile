@@ -2,7 +2,7 @@
 
 # Install project dependencies
 install:
-	npm install
+	npm ci
 
 # Build the project
 build:
