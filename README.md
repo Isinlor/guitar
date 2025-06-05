@@ -79,3 +79,11 @@ npm run test:e2e -- --debug
 ```sh
 make lint
 ```
+
+### Deploy to GitHub Pages
+
+The application is published at <https://isinlor.github.io/guitar/>. The Vite
+configuration sets the `base` option to `/guitar/` so that built assets have the
+correct paths when served from this subfolder. The accompanying GitHub Actions
+workflow runs `make build` to produce the production files under this base
+path.
