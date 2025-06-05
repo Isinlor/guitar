@@ -48,8 +48,13 @@ const playState = ref('idle');
 let animation = ref<Animation>();
 const playbackRate = ref(1);
 
+const synthVolume = ref(0.5);
+let synthGain: GainNode;
+let scheduledOscillators: OscillatorNode[] = [];
+
 watchEffect(() => {
   if(animation.value) animation.value.playbackRate = playbackRate.value;
+  if(synthGain) synthGain.gain.value = synthVolume.value;
 });
 
 
@@ -65,6 +70,10 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
   analyser = audioContext.createAnalyser();
   audioInput.connect(analyser);
 });
+
+synthGain = audioContext.createGain();
+synthGain.gain.value = synthVolume.value;
+synthGain.connect(audioContext.destination);
 
 const detectionWorker = new AutoCorrelateWorker();
 
@@ -134,7 +143,34 @@ watch([music], () => {
   };
 }, { immediate: true });
 
+function scheduleSynth() {
+  const start = audioContext.currentTime;
+  for (const evt of music.value) {
+    const osc = audioContext.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.value = frequencyFromNoteNumber(evt.note);
+    osc.connect(synthGain);
+    const startAt = start + evt.startTimeMs / 1000;
+    const stopAt = startAt + evt.durationMs / 1000;
+    osc.start(startAt);
+    osc.stop(stopAt);
+    scheduledOscillators.push(osc);
+  }
+}
+
+function stopSynth() {
+  scheduledOscillators.forEach(o => {
+    try { o.stop(); } catch (e) {
+      /* ignore */
+    }
+  });
+  scheduledOscillators = [];
+}
+
 function play() {
+  audioContext.resume();
+  stopSynth();
+  scheduleSynth();
   animation.value?.play();
   playState.value = 'running';
   detection.resume();
@@ -142,12 +178,14 @@ function play() {
 
 function pause() {
   animation.value?.pause();
+  stopSynth();
   playState.value = 'paused';
   detection.pause();
 }
 
 function stop() {
   animation.value?.cancel();
+  stopSynth();
   playState.value = 'idle';
   detection.pause();
 }
@@ -185,6 +223,8 @@ function stop() {
   <button style="margin: 1rem;" @click="stop()">Stop playing</button>
   <input type="range" v-model="playbackRate" min="0.1" max="2" step="0.1" style="margin: 1rem;">
   {{ playbackRate }} {{ animation?.playbackRate }}
+  <input type="range" v-model="synthVolume" min="0" max="1" step="0.01" style="margin: 1rem;">
+  Volume: {{ synthVolume }}
   <div style="margin: 1rem;">
     <span class="tag finger-0">Open note</span>
     <span class="tag finger-1">Finger 1</span>
