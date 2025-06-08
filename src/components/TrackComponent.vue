@@ -62,8 +62,7 @@ watchEffect(() => {
 let analyser: AnalyserNode;
 let dataArray = new Float32Array(4096 / 2);
 let audioContext = new window.AudioContext({
-  latencyHint: 'interactive',
-  sampleRate: 44100
+  latencyHint: 'interactive'
 });
 navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
   let audioInput = audioContext.createMediaStreamSource(stream);
@@ -80,7 +79,7 @@ const detectionWorker = new AutoCorrelateWorker();
 const time = ref(0);
 const note = ref(0);
 const correlated = ref<any>({});
-interface AutoCorrelateResult { frequency: number; expectedFrequencyRank: number }
+interface AutoCorrelateResult { frequency: number; probability: number }
 const results = ref<{ record: { time: number, detected: number, result: AutoCorrelateResult }[], noteEvent: NoteEvent }[]>([]);
 const detection = useRafFn(() => {
   time.value = Number(animation.value?.currentTime ?? 0);
