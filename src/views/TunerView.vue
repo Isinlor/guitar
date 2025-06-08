@@ -19,12 +19,15 @@ const audioContext = new window.AudioContext({ latencyHint: 'interactive' })
 const analyser = audioContext.createAnalyser()
 const dataArray = new Float32Array(2048)
 
-navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
   const src = audioContext.createMediaStreamSource(stream)
   src.connect(analyser)
 })
 
-interface StringState { cents: number; tuned: boolean }
+interface StringState {
+  cents: number
+  tuned: boolean
+}
 const stringStates = reactive<Record<number, StringState>>({})
 
 watchEffect(() => {
@@ -37,10 +40,16 @@ const currentString = ref<number | null>(null)
 
 useRafFn(() => {
   analyser.getFloatTimeDomainData(dataArray)
-  worker.postMessage({ index: 0, time: audioContext.currentTime, buffer: dataArray, sampleRate: audioContext.sampleRate, expectedFrequency: 0 })
+  worker.postMessage({
+    index: 0,
+    time: audioContext.currentTime,
+    buffer: dataArray,
+    sampleRate: audioContext.sampleRate,
+    expectedFrequency: 0
+  })
 })
 
-worker.onmessage = (e: MessageEvent<{ result: { frequency: number, probability: number } }>) => {
+worker.onmessage = (e: MessageEvent<{ result: { frequency: number; probability: number } }>) => {
   const { result } = e.data
   if (result.frequency === -1 || result.probability < 0.1) {
     currentString.value = null
@@ -48,18 +57,18 @@ worker.onmessage = (e: MessageEvent<{ result: { frequency: number, probability: 
   }
 
   const freq = result.frequency
-  const diffs = instrument.value.strings.map(string => {
+  const diffs = instrument.value.strings.map((string) => {
     const note = noteNumberFromFrequency(instrument.value.baseFrequencies[string])
     return { string, cents: centsOffFromNote(freq, note) }
   })
 
-  const nearest = diffs.reduce((a, b) => Math.abs(a.cents) < Math.abs(b.cents) ? a : b)
+  const nearest = diffs.reduce((a, b) => (Math.abs(a.cents) < Math.abs(b.cents) ? a : b))
   currentString.value = nearest.string
   stringStates[nearest.string].cents = nearest.cents
   stringStates[nearest.string].tuned = Math.abs(nearest.cents) <= 5
 }
 
-const allTuned = computed(() => instrument.value.strings.every(s => stringStates[s]?.tuned))
+const allTuned = computed(() => instrument.value.strings.every((s) => stringStates[s]?.tuned))
 </script>
 
 <template>
@@ -76,24 +85,24 @@ const allTuned = computed(() => instrument.value.strings.every(s => stringStates
       v-for="string in instrument.strings"
       :key="string"
       class="string"
-      :class="{ tuned: stringStates[string]?.tuned, active: currentString === string }"
+      :class="{ active: currentString === string }"
     >
       <div class="info">
         String {{ string }} - {{ instrument.baseFrequencies[string].toFixed(2) }} Hz
       </div>
-      <div class="meter">
+      <div class="meter" :class="{ tuned: stringStates[string]?.tuned }">
         <div
-          class="needle"
-          :style="{ transform: `rotate(${Math.max(-45, Math.min(45, stringStates[string]?.cents))}deg)` }"
+          class="indicator"
+          :style="{
+            transform: `translateX(${Math.max(-50, Math.min(50, stringStates[string]?.cents))}%)`
+          }"
         ></div>
       </div>
       <div class="cents">{{ Math.round(stringStates[string]?.cents) }} cents</div>
     </div>
   </div>
 
-  <div v-if="allTuned" class="complete">
-    Instrument tuned!
-  </div>
+  <div v-if="allTuned" class="complete">Instrument tuned!</div>
 </template>
 
 <style scoped>
@@ -106,27 +115,27 @@ const allTuned = computed(() => instrument.value.strings.every(s => stringStates
   margin-bottom: 1rem;
 }
 .string.active {
-  border-color: #1E90FF;
-}
-.string.tuned {
-  background-color: #00FF00;
+  border-color: #1e90ff;
 }
 .meter {
-  height: 10px;
+  height: 4px;
   background: #333;
   position: relative;
 }
-.needle {
+.meter.tuned {
+  background: #00ff00;
+}
+.indicator {
   position: absolute;
+  top: -3px;
   left: 50%;
-  bottom: 0;
   width: 2px;
-  height: 20px;
+  height: 10px;
   background: red;
-  transform-origin: bottom center;
+  transform: translateX(0%);
 }
 .complete {
-  color: #00FF00;
+  color: #00ff00;
   font-weight: bold;
   margin-top: 1rem;
 }
