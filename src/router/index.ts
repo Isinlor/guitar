@@ -10,6 +10,11 @@ const router = createRouter({
       component: FretboardView
     },
     {
+      path: '/tuner',
+      name: 'tuner',
+      component: () => import('../views/TunerView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
