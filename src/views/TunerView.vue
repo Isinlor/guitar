@@ -69,7 +69,7 @@ const SMOOTHING_FACTOR = 0.1 // The alpha value (α)
 
 worker.onmessage = (e: MessageEvent<{ result: { frequency: number; probability: number } }>) => {
   const { result } = e.data
-  if (result.frequency === -1 || result.probability < 0.1) {
+  if (result.frequency === -1 || result.probability < 0.8) {
     currentString.value = null
     smoothedFrequency.value = null
     detectionsCount.value = 0
@@ -112,13 +112,15 @@ worker.onmessage = (e: MessageEvent<{ result: { frequency: number; probability: 
   }
 
   currentString.value = nearest.string
+  stringStates[nearest.string].cents = nearest.cents
 
-  detectionsCount.value++
-  if (detectionsCount.value > 20) {
+  if (Math.abs(nearest.cents) <= 5) detectionsCount.value++
+  else detectionsCount.value = 0
+
+  if (detectionsCount.value >= 15) {
     console.log(`Tuning string ${nearest.string} to ${nearest.cents} cents, detected ${detectionsCount.value} times`)
-    stringStates[nearest.string].cents = nearest.cents
     stringStates[nearest.string].tuned = Math.abs(nearest.cents) <= 5
-    detectionsCount.value = 0
+    stringStates[nearest.string].cents = nearest.cents
   }
 
 }
@@ -145,13 +147,25 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
       <div class="info">
         String {{ string }} - {{ instrument.baseFrequencies[string].toFixed(2) }} Hz
       </div>
-      <div class="meter" :class="{ tuned: stringStates[string]?.tuned }">
+      <div class="meter" :class="{ ideal: stringStates[string]?.tuned }">
         <div
-          v-if="currentString === string"
+          v-if="stringStates[string]?.tuned || currentString === string"
           class="indicator"
           :style="{
             left: `${50 + Math.max(-50, Math.min(50, stringStates[string]?.cents))}%`
           }"
+        ></div>
+        <div
+          class="indicator min"
+          :style="{ left: `45%` }"
+        ></div>
+        <div
+          class="indicator ideal"
+          :style="{ left: `50%` }"
+        ></div>
+        <div
+          class="indicator max"
+          :style="{ left: `55%` }"
         ></div>
       </div>
       <div class="cents">{{ Math.round(stringStates[string]?.cents) }} cents</div>
@@ -178,7 +192,7 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
   background: #333;
   position: relative;
 }
-.meter.tuned {
+.meter.ideal {
   background: #00ff00;
 }
 .indicator {
@@ -189,6 +203,17 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
   background: red;
   transform: translateX(50%);
 }
+
+.indicator.ideal, .indicator.min, .indicator.max {
+  background: #747474;
+}
+
+.indicator.min, .indicator.max {
+  width: 2px;
+  top: -3px;
+  height: 11px;
+}
+
 .complete {
   color: #00ff00;
   font-weight: bold;
