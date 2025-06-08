@@ -6,6 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
   <nav>
     <RouterLink to="/">Fretboard</RouterLink>
+    <RouterLink to="/tuner">Tuner</RouterLink>
     <RouterLink to="/about">About</RouterLink>
   </nav>
 
