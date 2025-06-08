@@ -51,7 +51,7 @@ useRafFn(() => {
 
 worker.onmessage = (e: MessageEvent<{ result: { frequency: number; probability: number } }>) => {
   const { result } = e.data
-  if (result.frequency === -1 || result.probability < 0.1) {
+  if (result.frequency === -1 || result.probability < 0.2) {
     currentString.value = null
     return
   }
@@ -94,7 +94,7 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
         <div
           class="indicator"
           :style="{
-            transform: `translateX(${Math.max(-50, Math.min(50, stringStates[string]?.cents))}%)`
+            left: `${50 + Math.max(-50, Math.min(50, stringStates[string]?.cents))}%`
           }"
         ></div>
       </div>
@@ -128,11 +128,10 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
 .indicator {
   position: absolute;
   top: -3px;
-  left: 50%;
   width: 2px;
   height: 10px;
   background: red;
-  transform: translateX(0%);
+  transform: translateX(50%);
 }
 .complete {
   color: #00ff00;
