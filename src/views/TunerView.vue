@@ -19,9 +19,23 @@ const audioContext = new window.AudioContext({ latencyHint: 'interactive' })
 const analyser = audioContext.createAnalyser()
 const dataArray = new Float32Array(2048)
 
-navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+navigator.mediaDevices.getUserMedia({ audio: { noiseSuppression: true } }).then((stream) => {
   const src = audioContext.createMediaStreamSource(stream)
-  src.connect(analyser)
+
+  // Create a high-pass filter to remove low-end rumble (e.g., below 60 Hz)
+  const highPassFilter = audioContext.createBiquadFilter()
+  highPassFilter.type = 'highpass'
+  highPassFilter.frequency.value = 60 // Cutoff frequency in Hz
+
+  // Create a low-pass filter to remove high-end hiss (e.g., above 5000 Hz)
+  const lowPassFilter = audioContext.createBiquadFilter()
+  lowPassFilter.type = 'lowpass'
+  lowPassFilter.frequency.value = 5000 // Cutoff frequency in Hz
+
+  // Chain the nodes together: source -> filters -> analyser
+  src.connect(highPassFilter)
+  highPassFilter.connect(lowPassFilter)
+  lowPassFilter.connect(analyser)
 })
 
 interface StringState {
@@ -49,23 +63,64 @@ useRafFn(() => {
   })
 })
 
+const detectionsCount = ref<number>(0)
+const smoothedFrequency = ref<number | null>(null)
+const SMOOTHING_FACTOR = 0.1 // The alpha value (α)
+
 worker.onmessage = (e: MessageEvent<{ result: { frequency: number; probability: number } }>) => {
   const { result } = e.data
-  if (result.frequency === -1 || result.probability < 0.2) {
+  if (result.frequency === -1 || result.probability < 0.1) {
     currentString.value = null
+    smoothedFrequency.value = null
+    detectionsCount.value = 0
     return
   }
 
-  const freq = result.frequency
+  const newFrequency = result.frequency
+
+  smoothedFrequency.value =
+    SMOOTHING_FACTOR * newFrequency + (1 - SMOOTHING_FACTOR) * (smoothedFrequency.value ?? newFrequency)
+
+  const freq = smoothedFrequency.value
+
   const diffs = instrument.value.strings.map((string) => {
     const note = noteNumberFromFrequency(instrument.value.baseFrequencies[string])
     return { string, cents: centsOffFromNote(freq, note) }
   })
 
   const nearest = diffs.reduce((a, b) => (Math.abs(a.cents) < Math.abs(b.cents) ? a : b))
+
+  if (Math.abs(nearest.cents) > 100) {
+    console.log(`Nothing detected`)
+    currentString.value = null
+    smoothedFrequency.value = null
+    detectionsCount.value = 0
+    return
+  }
+
+  if (currentString.value !== null && currentString.value !== nearest.string) {
+    console.log(`End of focus on ${currentString.value}`)
+    currentString.value = null
+    smoothedFrequency.value = null
+    detectionsCount.value = 0
+    return
+  }
+
+  if (Math.abs(nearest.cents) > 50) {
+    console.log(`String ${nearest.string} is out of range: ${nearest.cents} cents`)
+    return
+  }
+
   currentString.value = nearest.string
-  stringStates[nearest.string].cents = nearest.cents
-  stringStates[nearest.string].tuned = Math.abs(nearest.cents) <= 5
+
+  detectionsCount.value++
+  if (detectionsCount.value > 20) {
+    console.log(`Tuning string ${nearest.string} to ${nearest.cents} cents, detected ${detectionsCount.value} times`)
+    stringStates[nearest.string].cents = nearest.cents
+    stringStates[nearest.string].tuned = Math.abs(nearest.cents) <= 5
+    detectionsCount.value = 0
+  }
+
 }
 
 const allTuned = computed(() => instrument.value.strings.every((s) => stringStates[s]?.tuned))
@@ -92,6 +147,7 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
       </div>
       <div class="meter" :class="{ tuned: stringStates[string]?.tuned }">
         <div
+          v-if="currentString === string"
           class="indicator"
           :style="{
             left: `${50 + Math.max(-50, Math.min(50, stringStates[string]?.cents))}%`
@@ -127,9 +183,9 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
 }
 .indicator {
   position: absolute;
-  top: -3px;
-  width: 2px;
-  height: 10px;
+  top: -5px;
+  width: 4px;
+  height: 15px;
   background: red;
   transform: translateX(50%);
 }
