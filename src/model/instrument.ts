@@ -15,6 +15,7 @@ export class Instrument {
     switch (name) {
       case "ukulele": return Instrument.ukulele();
       case "guitar": return Instrument.guitar();
+      case "kantele": return Instrument.kantele();
       default: throw new Error(`No instrument found with name ${name}!`);
     }
   }
@@ -41,6 +42,25 @@ export class Instrument {
         4: 146.83, // D string
         5: 110.00, // A string
         6: 82.41   // E string (6th, thickest)
+      }
+    );
+  }
+
+  public static kantele(): Instrument {
+    return new Instrument(
+      "kantele", 0,
+      {
+        1: 783.99, // G5
+        2: 739.99, // F#5
+        3: 659.26, // E5
+        4: 587.33, // D5
+        5: 554.37, // C#5
+        6: 493.88, // B4
+        7: 440.00, // A4
+        8: 392.00, // G4
+        9: 369.99, // F#4
+        10: 329.63, // E4
+        11: 293.66  // D4
       }
     );
   }

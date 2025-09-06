@@ -7,10 +7,11 @@ import { centsOffFromNote, noteNumberFromFrequency } from '@/model/midi'
 
 const instruments = {
   ukulele: Instrument.ukulele(),
-  guitar: Instrument.guitar()
+  guitar: Instrument.guitar(),
+  kantele: Instrument.kantele()
 }
 
-const selectedInstrument = ref<'ukulele' | 'guitar'>('guitar')
+const selectedInstrument = ref<'ukulele' | 'guitar' | 'kantele'>('guitar')
 const instrument = computed(() => instruments[selectedInstrument.value])
 
 const worker = new AutoCorrelateWorker()
@@ -134,6 +135,7 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
     <select v-model="selectedInstrument">
       <option value="guitar">Guitar</option>
       <option value="ukulele">Ukulele</option>
+      <option value="kantele">11-string Kantele</option>
     </select>
   </label>
 
