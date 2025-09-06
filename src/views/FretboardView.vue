@@ -16,7 +16,7 @@ const instruments = {
     frets: 12
   },
   kantele: {
-    strings: 11,
+    strings: 15,
     frets: 0
   }
 }

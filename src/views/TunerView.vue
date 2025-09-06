@@ -135,7 +135,7 @@ const allTuned = computed(() => instrument.value.strings.every((s) => stringStat
     <select v-model="selectedInstrument">
       <option value="guitar">Guitar</option>
       <option value="ukulele">Ukulele</option>
-      <option value="kantele">11-string Kantele</option>
+      <option value="kantele">15-string Kantele</option>
     </select>
   </label>
 

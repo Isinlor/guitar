@@ -5,9 +5,9 @@ import { Instrument } from './instrument'
 describe('Instrument', () => {
 
   describe('kantele', () => {
-    it('should create an 11-string kantele', () => {
+    it('should create an 15-string kantele', () => {
       const instrument = Instrument.kantele();
-      expect(instrument.strings).toHaveLength(11);
+      expect(instrument.strings).toHaveLength(15);
       expect(instrument.fretsAmount).toBe(0);
       expect(instrument.baseFrequencies[1]).toBeCloseTo(783.99);
       expect(instrument.baseFrequencies[11]).toBeCloseTo(293.66);
@@ -15,7 +15,7 @@ describe('Instrument', () => {
 
     it('should be retrievable via Instrument.get', () => {
       const instrument = Instrument.get('kantele');
-      expect(instrument.strings).toHaveLength(11);
+      expect(instrument.strings).toHaveLength(15);
     });
   });
 
