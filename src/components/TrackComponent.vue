@@ -311,6 +311,26 @@ function stop() {
   border-top: 2px solid #999;
 }
 
+.string-7 {
+  border-top: 2px solid #aaa;
+}
+
+.string-8 {
+  border-top: 2px solid #bbb;
+}
+
+.string-9 {
+  border-top: 2px solid #ccc;
+}
+
+.string-10 {
+  border-top: 2px solid #ddd;
+}
+
+.string-11 {
+  border-top: 2px solid #eee;
+}
+
 .note {
   position: absolute;
   top: 0px;

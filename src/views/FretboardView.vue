@@ -14,10 +14,14 @@ const instruments = {
   guitar: {
     strings: 6,
     frets: 12
+  },
+  kantele: {
+    strings: 11,
+    frets: 0
   }
 }
 
-const selectedInstrument = ref<'ukulele' | 'guitar'>('guitar')
+const selectedInstrument = ref<'ukulele' | 'guitar' | 'kantele'>('guitar')
 const instrument = computed(() => instruments[selectedInstrument.value])
 
 const music = ref<any>([]) // Initialize music ref
@@ -56,6 +60,7 @@ const handleFileUpload = (event: Event) => {
     <select v-model="selectedInstrument">
       <option value="guitar">Guitar</option>
       <option value="ukulele">Ukulele</option>
+      <option value="kantele">11-string Kantele</option>
     </select>
   </label>
   <input type="file" accept=".json,.mid" @change="handleFileUpload" />
