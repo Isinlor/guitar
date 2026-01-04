@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := all
+CHROMIUM_EXECUTABLE ?= $(shell command -v google-chrome || command -v chromium || command -v chromium-browser || true)
 
 # Install project dependencies
 install: node_modules
@@ -19,7 +20,7 @@ vitest: install
 
 # Run Playwright integration tests
 playwright: playwright-install
-	npx playwright test
+	PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$(CHROMIUM_EXECUTABLE) PLAYWRIGHT_HEADLESS=1 npx playwright test
 
 # Generate Playwright code for dev server
 playwright-codegen: playwright-install
@@ -27,7 +28,11 @@ playwright-codegen: playwright-install
 
 # Install Playwright browser
 playwright-install: install
+ifneq ($(CHROMIUM_EXECUTABLE),)
+	@echo "Using system Chromium at $(CHROMIUM_EXECUTABLE)"
+else
 	npx playwright install chromium
+endif
 
 # Lint the codebase
 lint: install
