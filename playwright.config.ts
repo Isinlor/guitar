@@ -1,6 +1,10 @@
 import process from 'node:process'
 import { defineConfig, devices } from '@playwright/test'
 
+const chromiumExecutablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
+const headlessEnv = process.env.PLAYWRIGHT_HEADLESS
+const isHeadless = headlessEnv ? headlessEnv !== 'false' : !!process.env.CI
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -39,11 +43,12 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
-    /* Only on CI systems run the tests headless */
-    headless: !!process.env.CI,
+    /* Only on CI systems run the tests headless unless overridden. */
+    headless: isHeadless,
     permissions: ['microphone'],
     launchOptions: {
-      args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream']
+      args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
+      executablePath: chromiumExecutablePath
     }
   },
 
