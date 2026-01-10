@@ -1,5 +1,5 @@
 import { AudioService } from './audio';
-import { Layout, type Note } from './layout';
+import { type Note } from './layout';
 import { ThemeManager } from './theme';
 
 export function clamp(v: number, min: number, max: number) { return Math.max(min, Math.min(max, v)); }

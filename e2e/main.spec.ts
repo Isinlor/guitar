@@ -16,5 +16,10 @@ test('upload midi file', async ({ page }) => {
   await page.selectOption('select', 'ukulele')
   const filePath = path.resolve(__dirname, '../music/hejsokoly.mid')
   await page.setInputFiles('input[type="file"]', filePath)
-  await expect(page.locator('.tab-row')).toHaveCount(4)
+
+  // Switch to DOM renderer to verify strings
+  await page.getByRole('button', { name: 'Canvas' }).click()
+
+  // Verify 4 strings for ukulele
+  await expect(page.locator('.dom-string')).toHaveCount(4)
 })
