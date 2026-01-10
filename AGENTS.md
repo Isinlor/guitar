@@ -1,6 +1,6 @@
 # Agent Instructions
 
-- Always run `make checks` from the repository root before finalizing changes.
+- ALWAYS run `make checks` from the repository root before finalizing changes.
 - If the code is working correctly, these checks should complete successfully.
 
 ## Running checks successfully
