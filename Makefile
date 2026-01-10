@@ -31,7 +31,14 @@ playwright-install: install
 ifneq ($(CHROMIUM_EXECUTABLE),)
 	@echo "Using system Chromium at $(CHROMIUM_EXECUTABLE)"
 else
-	npx playwright install chromium
+	@echo "No system Chromium found; attempting Playwright Chromium download."
+	@set -e; \
+	npx playwright install chromium || { \
+		echo "Playwright download failed; installing Google Chrome as a fallback."; \
+		sudo apt-get update; \
+		curl -L -o /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb; \
+		sudo apt-get install -y /tmp/google-chrome-stable_current_amd64.deb; \
+	}
 endif
 
 # Lint the codebase
